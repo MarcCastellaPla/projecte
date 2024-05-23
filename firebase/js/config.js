@@ -1,10 +1,10 @@
 firebase.initializeApp({
-    apiKey: "AIzaSyArCKYqxtudHIznNGQU8FEM0r1v60tetwY",
-    authDomain: "items-c96fa.firebaseapp.com",
-    projectId: "items-c96fa",
-    storageBucket: "items-c96fa.appspot.com",
-    messagingSenderId: "508418114104",
-    appId: "1:508418114104:web:fd99543fee79a0c4a65ccd"
+    apiKey: "AIzaSyActx9CVGMijdLsWHu-HB0oL91ge-Jzyxk",
+    authDomain: "items-c6af2.firebaseapp.com",
+    projectId: "items-c6af2",
+    storageBucket: "items-c6af2.appspot.com",
+    messagingSenderId: "766706878982",
+    appId: "1:766706878982:web:8ce05ce9511d6973b1d187"
 });
 
 const auth = firebase.auth();
