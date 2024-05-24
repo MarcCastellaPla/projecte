@@ -10,6 +10,7 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-firestore.js"></script>
+	<link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
@@ -32,7 +33,7 @@
 					</div>
 					<div class="form-group row">
 						<div class="offset-4 col-8">
-							<button type="button" id="newUser" class="btn btn-outline-primary float-right">Registrar un
+							<button type="button" id="newUser" class="btn btn-outline-primary float-right fonsBlau">Registrar un
 								nou usuari</button>
 							<button type="button" id="login" class="btn btn-default float-right mr-3">Entrar</button>
 						</div>
@@ -71,20 +72,26 @@
 			<div class="col-8 offset-2" id="itemsForm" style="display: none;">
 				<form>
 					<div class="form-group row">
-						<label for="title" class="col-4 col-form-label">Títol:</label>
+						<label for="title" class="col-4 col-form-label">Aplicación:</label>
 						<div class="col-8">
 							<input type="text" class="form-control" id="title">
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="content" class="col-4 col-form-label">Contingut:</label>
+						<label for="content" class="col-4 col-form-label">Usuario:</label>
 						<div class="col-8">
 							<input type="text" class="form-control" id="content">
 						</div>
 					</div>
 					<div class="form-group row">
+						<label for="content" class="col-4 col-form-label">Contraseña:</label>
+						<div class="col-8">
+							<input type="password" class="form-control" id="content">
+						</div>
+					</div>
+					<div class="form-group row">
 						<label for="image" class="col-4 col-form-label">Imatge:</label>
-						<div class="col-6">
+						<div class="col-6 lletraBlanca">
 							<input type="file" class="form-control-file" id="image">
 						</div>
 						<div class="col-2">
@@ -106,7 +113,7 @@
 			</div>
 		</div>
 		<div class="table-responsive">
-			<table class="table table-hover" id="listItems" style="display: none;">
+			<table class="table table-hover lletraBlanca" id="listItems" style="display: none;">
 			</table>
 		</div>
 	</div>

@@ -49,9 +49,9 @@ function loadItems() {
         .then((arrayItems) => {
             document.getElementById("listItems").innerHTML = `<tr>
 																<th></th>
-																<th>Títol</th>
-																<th>Contingut</th>
-																<th></th>
+																<th>Aplicación</th>
+																<th>Usuario</th>
+																<th>Contraseña</th>
 															</tr>`;
             arrayItems.forEach((docItem) => {
                 let image = "";
