@@ -17,6 +17,10 @@ function addItem(doc) {
         });
 }
 
+function add(collection, data) {
+    return collection.add(data);
+}
+
 function deleteItem(id) {
     deleteById(items, id)
         .then(() => {
@@ -43,46 +47,45 @@ function editItem(id) {
 
 function loadItems() {
     selectAll(items)
-    // selectAll(items, "title")
-    // selectWhere(items, "title", "==", "Firma")
-    // selectLike(items, "title", "F")
         .then((arrayItems) => {
             document.getElementById("listItems").innerHTML = `<tr>
-																<th></th>
-																<th>Aplicación</th>
-																<th>Usuario</th>
-																<th>Contraseña</th>
-															</tr>`;
-            arrayItems.forEach((docItem) => {
-                let image = "";
-                if (docItem.data().image != null) {
-                    image = `<img src="${docItem.data().image}" class="rounded" style="max-width: 100px; max-height: 100px;" "alt="${docItem.data().title}">`;
-                }
-                selectById(categories, docItem.data().category.id)
+                                                                <th></th>
+                                                                <th>Aplicación</th>
+                                                                <th>Usuario</th>
+                                                                <th>Imatge</th>
+                                                                <th>Contraseña</th>
+                                                            </tr>`;
+            let promises = arrayItems.map((docItem) => {
+                let image = docItem.data().image ? `<img src="${docItem.data().image}" class="rounded" style="max-width: 100px; max-height: 100px;" alt="${docItem.data().title}">` : '';
+                return selectById(categories, docItem.data().category)
                     .then((docCategory) => {
                         document.getElementById("listItems").innerHTML += `<tr>
-                                                                        <td>${image}</td>
-                                                                        <td>${docItem.data().title} - ${docCategory.data().name}</td>
-                                                                        <td>${docItem.data().content}</td>
-                                                                        <td>
-                                                                            <button type="button" class="btn btn-danger float-right" onclick="eliminar('${docItem.id}', '${docItem.data().image}')">
-                                                                                Eliminar
-                                                                            </button>
-                                                                            <button type="button" class="btn btn-primary mr-2 float-right" onclick="editItem('${docItem.id}')">
-                                                                                Editar
-                                                                            </button>
-                                                                        </td>
-                                                                    </tr>`;
+                                                                            <td>${image}</td>
+                                                                            <td>${docItem.data().title}</td>
+                                                                            <td>${docItem.data().content}</td>
+                                                                            <td>${docCategory.data().name}</td>
+                                                                            <td>
+                                                                                <button type="button" class="btn btn-danger float-right" onclick="deleteItem('${docItem.id}')">
+                                                                                    Eliminar
+                                                                                </button>
+                                                                                <button type="button" class="btn btn-primary mr-2 float-right" onclick="editItem('${docItem.id}')">
+                                                                                    Editar
+                                                                                </button>
+                                                                            </td>
+                                                                        </tr>`;
                     })
                     .catch(() => {
                         showAlert("Error al mostrar els elements", "alert-danger");
                     });
             });
+
+            return Promise.all(promises);
         })
         .catch(() => {
             showAlert("Error al mostrar els elements", "alert-danger");
         });
 }
+
 
 function updateItem(id, doc) {
     updateById(items, id, doc)
@@ -99,5 +102,16 @@ function updateItem(id, doc) {
         })
         .catch(() => {
             showAlert("Error al intentar actualitzat l'element", "alert-danger");
+        });
+}
+
+function selectById(collection, id) {
+    return collection.doc(id).get()
+        .then((doc) => {
+            if (doc.exists) {
+                return doc;
+            } else {
+                throw new Error("No document found with id: " + id);
+            }
         });
 }

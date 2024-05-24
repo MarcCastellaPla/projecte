@@ -1,4 +1,38 @@
+// firebase.js
+
 const db = firebase.firestore();
+
+function addItem(doc) {
+    add(items, doc)
+        .then(() => {
+            const user = firebase.auth().currentUser;
+            const categoriesCollection = db.collection("categories");
+            const categoryName = user ? user.email : "Unknown User";
+
+            if (user) {
+                if (doc.email === user.email) {
+                    categoriesCollection.add({ name: categoryName })
+                        .then(() => {
+                            console.log("Nueva categoría creada para el nuevo usuario");
+                        })
+                        .catch((error) => {
+                            console.error("Error al crear la nueva categoría:", error);
+                        });
+                }
+            }
+
+            loadItems();
+
+            document.getElementById("title").value = "";
+            document.getElementById("content").value = "";
+            document.getElementById("image").value = "";
+
+            showAlert("Elemento guardado correctamente", "alert-success");
+        })
+        .catch(() => {
+            showAlert("Error al intentar guardar el elemento", "alert-danger");
+        });
+}
 
 function add(collection, doc) {
     return new Promise((resolve, reject) => {
