@@ -239,6 +239,54 @@
 	document.getElementById("image").addEventListener("change", function () {
 		imatgeModificada = true;
 	});
+	document.getElementById("login").addEventListener("click", function () {
+		let email = document.getElementById("loginEmail").value;
+		let password = document.getElementById("loginPassword").value;
+	
+		auth.signInWithEmailAndPassword(email, password)
+			.then(function () {
+				showAlert("Usuari autenticat", "alert-success");
+	
+				// Guardar el correo electrónico del usuario
+				let userEmail = email;
+	
+				document.getElementById("loginForm").style.display = "none";
+				document.getElementById("itemsForm").style.display = "block";
+				document.getElementById("listItems").style.display = "table";
+	
+				// Pasar el correo electrónico del usuario a la función uploadFile
+				document.getElementById("save").addEventListener("click", function () {
+					let id = document.getElementById("elementId").value;
+					let title = document.getElementById("title").value;
+					let content = document.getElementById("content").value;
+					let image = document.getElementById("image").files[0];
+					let doc = {
+						content: content,
+						title: title
+					};
+	
+					if (id == "") {
+						uploadFile(image, userEmail) // Pasar userEmail como argumento
+							.then((imageUrl) => {
+								doc.image = imageUrl;
+								addItem(doc);
+							})
+							.catch(() => {
+								showAlert("Error al intentar guardar l'element", "alert-danger");
+							});
+					} else {
+						// Resto del código de save
+					}
+	
+					imatgeModificada = false;
+				});
+	
+			})
+			.catch(function (error) {
+				showAlert("Error d’autenticació", "alert-danger");
+			});
+	});
+	
 
 </script>
 
