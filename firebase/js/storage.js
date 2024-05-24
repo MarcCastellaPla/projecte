@@ -33,18 +33,22 @@ function uploadFile(file, userEmail) {
                     .then(querySnapshot => {
                         console.log("Consulta realizada correctamente.");
                         if (!querySnapshot.empty) {
+                            // Si se encuentra una categoría para el usuario, se asigna
                             userCategory = querySnapshot.docs[0].id;
                             console.log("Categoría del usuario encontrada:", userCategory);
                         } else {
+                            // No se encontró una categoría para el usuario, la creamos
+                            console.log("No se encontró una categoría para el usuario, creando una nueva...");
                             return db.collection("categories").add({ name: userEmail });
                         }
                     })
                     .then(categoryDocRef => {
-                        console.log("Categoría del usuario añadida correctamente.");
-                        if (categoryDocRef) {
+                        if (!userCategory && categoryDocRef) {
+                            // Si no se encontró una categoría y se creó una nueva, se asigna
                             userCategory = categoryDocRef.id;
-                            console.log("Categoría del usuario:", userCategory);
+                            console.log("Categoría del usuario creada:", userCategory);
                         }
+                        // Subimos el archivo al almacenamiento
                         return storage.ref().child('images/items/' + randomId).putString(reader.result, "data_url");
                     })
                     .then((snapshot) => {
@@ -52,6 +56,7 @@ function uploadFile(file, userEmail) {
                         return snapshot.ref.getDownloadURL();
                     })
                     .then(downloadURL => {
+                        // Resolvemos la promesa con la URL de descarga y la categoría del usuario
                         resolve({ downloadURL, category: userCategory });
                     })
                     .catch((error) => {
@@ -64,3 +69,5 @@ function uploadFile(file, userEmail) {
         }
     });
 }
+
+

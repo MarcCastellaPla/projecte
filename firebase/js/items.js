@@ -1,117 +1,92 @@
-const items = db.collection("items");
-const categories = db.collection("categories");
+// Dentro de items.js
 
-function addItem(doc) {
-    add(items, doc)
-        .then(() => {
-            loadItems();
+document.getElementById("save").addEventListener("click", function () {
+    let id = document.getElementById("elementId").value;
+    let title = document.getElementById("title").value;
+    let content = document.getElementById("content").value;
+    let password = document.getElementById("constrasenya").value; // Obtener la contraseña ingresada
+    let image = document.getElementById("image").files[0];
 
-            document.getElementById("title").value = "";
-            document.getElementById("content").value = "";
-            document.getElementById("image").value = "";
+    // Aquí necesitamos obtener el correo electrónico del usuario y la categoría asociada
+    let userEmail = document.getElementById("loginEmail").value; // Obtener el correo electrónico del usuario
 
-            showAlert("Element guardat correctament", "alert-success");
-        })
-        .catch(() => {
-            showAlert("Error al intentar guardar l'element", "alert-danger");
-        });
-}
+    // Lógica para obtener la categoría asociada al usuario
+    console.log("Email del usuario:", userEmail);
+    db.collection("categories").where("name", "==", userEmail).get()
+        .then(querySnapshot => {
+            console.log("Consulta realizada correctamente.");
+            if (!querySnapshot.empty) {
+                let categoryRef = querySnapshot.docs[0].ref; // Obtener la referencia a la categoría
+                console.log("Categoría encontrada:", categoryRef);
 
-function add(collection, data) {
-    return collection.add(data);
-}
+                // Llamar a la función uploadFile con la referencia a la categoría
+                uploadFile(image, userEmail, categoryRef)
+                    .then((fileData) => {
+                        console.log("Archivo subido correctamente.");
 
-function deleteItem(id) {
-    deleteById(items, id)
-        .then(() => {
-            loadItems();
-            showAlert("Element eliminat correctament", "alert-success");
-        }).catch(() => {
-            showAlert("Error al intentar eliminar l'element", "alert-danger");
-        });
-}
+                        let imageUrl = fileData.downloadURL;
+                        let category = fileData.category; // Aquí ya tenemos la referencia a la categoría
+                        console.log("URL de la imagen:", imageUrl);
+                        console.log("Categoría del usuario:", category);
 
-function editItem(id) {
-    document.getElementById("elementId").value = id;
-    document.getElementById("thumbnail").style.visibility = "visible";
-    selectById(items, id)
-        .then((doc) => {
-            document.getElementById("title").value = doc.data().title;
-            document.getElementById("content").value = doc.data().content;
-            document.getElementById("thumbnail").src = doc.data().image;
-        })
-        .catch(() => {
-            showAlert("Error al intentar editar l'element", "alert-danger");
-        });
-}
+                        // Luego de cargar el archivo, añadir el item
+                        let doc = {
+                            content: content,
+                            title: title,
+                            image: imageUrl,
+                            category: category // Asignar la referencia a la categoría al item
+                        };
 
-function loadItems() {
-    selectAll(items)
-        .then((arrayItems) => {
-            document.getElementById("listItems").innerHTML = `<tr>
-                                                                <th></th>
-                                                                <th>Aplicación</th>
-                                                                <th>Usuario</th>
-                                                                <th>Imatge</th>
-                                                                <th>Contraseña</th>
-                                                            </tr>`;
-            let promises = arrayItems.map((docItem) => {
-                let image = docItem.data().image ? `<img src="${docItem.data().image}" class="rounded" style="max-width: 100px; max-height: 100px;" alt="${docItem.data().title}">` : '';
-                return selectById(categories, docItem.data().category)
-                    .then((docCategory) => {
-                        document.getElementById("listItems").innerHTML += `<tr>
-                                                                            <td>${image}</td>
-                                                                            <td>${docItem.data().title}</td>
-                                                                            <td>${docItem.data().content}</td>
-                                                                            <td>${docCategory.data().name}</td>
-                                                                            <td>
-                                                                                <button type="button" class="btn btn-danger float-right" onclick="deleteItem('${docItem.id}')">
-                                                                                    Eliminar
-                                                                                </button>
-                                                                                <button type="button" class="btn btn-primary mr-2 float-right" onclick="editItem('${docItem.id}')">
-                                                                                    Editar
-                                                                                </button>
-                                                                            </td>
-                                                                        </tr>`;
+                        addItem(doc, password);
                     })
-                    .catch(() => {
-                        showAlert("Error al mostrar els elements", "alert-danger");
+                    .catch((error) => {
+                        console.error("Error al subir el archivo:", error);
+                        showAlert("Error al intentar guardar l'element", "alert-danger");
                     });
-            });
-
-            return Promise.all(promises);
-        })
-        .catch(() => {
-            showAlert("Error al mostrar els elements", "alert-danger");
-        });
-}
-
-
-function updateItem(id, doc) {
-    updateById(items, id, doc)
-        .then(() => {
-            loadItems();
-
-            document.getElementById("elementId").value = "";
-            document.getElementById("title").value = "";
-            document.getElementById("content").value = "";
-            document.getElementById("image").value = "";
-            document.getElementById("thumbnail").style.visibility = "hidden";
-
-            showAlert("Element actualitzat correctament", "alert-success");
-        })
-        .catch(() => {
-            showAlert("Error al intentar actualitzat l'element", "alert-danger");
-        });
-}
-
-function selectById(collection, id) {
-    return collection.doc(id).get()
-        .then((doc) => {
-            if (doc.exists) {
-                return doc;
             } else {
-                throw new Error("No document found with id: " + id);
+                console.error("No se encontró una categoría para el usuario:", userEmail);
+                showAlert("No se encontró una categoría para el usuario", "alert-danger");
+                
+                // Si no se encuentra una categoría, creamos una nueva categoría para el usuario
+                console.log("Creando una nueva categoría para el usuario:", userEmail);
+                db.collection("categories").add({ name: userEmail })
+                    .then((categoryDocRef) => {
+                        console.log("Nueva categoría creada:", categoryDocRef.id);
+                        let categoryRef = categoryDocRef.ref; // Obtener la referencia a la nueva categoría
+
+                        // Llamar a la función uploadFile con la referencia a la nueva categoría
+                        uploadFile(image, userEmail, categoryRef)
+                            .then((fileData) => {
+                                console.log("Archivo subido correctamente.");
+
+                                let imageUrl = fileData.downloadURL;
+                                let category = fileData.category; // Aquí ya tenemos la referencia a la categoría
+                                console.log("URL de la imagen:", imageUrl);
+                                console.log("Categoría del usuario:", category);
+
+                                // Luego de cargar el archivo, añadir el item
+                                let doc = {
+                                    content: content,
+                                    title: title,
+                                    image: imageUrl,
+                                    category: category // Asignar la referencia a la categoría al item
+                                };
+
+                                addItem(doc, password);
+                            })
+                            .catch((error) => {
+                                console.error("Error al subir el archivo:", error);
+                                showAlert("Error al intentar guardar l'element", "alert-danger");
+                            });
+                    })
+                    .catch((error) => {
+                        console.error("Error al crear una nueva categoría:", error);
+                        showAlert("Error al intentar guardar l'element", "alert-danger");
+                    });
             }
+        })
+        .catch((error) => {
+            console.error("Error al buscar la categoría del usuario:", error);
+            showAlert("Error al buscar la categoría del usuario", "alert-danger");
         });
-}
+});
