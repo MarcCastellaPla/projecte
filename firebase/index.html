@@ -72,27 +72,27 @@
 			<div class="col-8 offset-2" id="itemsForm" style="display: none;">
 				<form>
 					<div class="form-group row">
-						<label for="title" class="col-4 col-form-label">Aplicación:</label>
+						<label for="aplicacion" class="col-4 col-form-label">Aplicación:</label>
 						<div class="col-8">
-							<input type="text" class="form-control" id="title">
+							<input type="text" class="form-control" id="aplicacion">
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="content" class="col-4 col-form-label">Usuario:</label>
+						<label for="usuario" class="col-4 col-form-label">Usuario:</label>
 						<div class="col-8">
-							<input type="text" class="form-control" id="content">
+							<input type="text" class="form-control" id="usuario">
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="content" class="col-4 col-form-label">Contraseña:</label>
+						<label for="contrasenya" class="col-4 col-form-label">Contraseña:</label>
 						<div class="col-8">
 							<input type="password" class="form-control" id="constrasenya">
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="image" class="col-4 col-form-label">Imatge:</label>
+						<label for="logo" class="col-4 col-form-label">Logo:</label>
 						<div class="col-6 lletraBlanca">
-							<input type="file" class="form-control-file" id="image">
+							<input type="file" class="form-control-file" id="logo">
 						</div>
 						<div class="col-2">
 							<img class="rounded" id="thumbnail"
@@ -174,63 +174,47 @@
 		let email = document.getElementById("signupEmail").value;
 		let password = document.getElementById("signupPassword").value;
 		let passwordConfirm = document.getElementById("signupPasswordConfirm").value;
-		
+
 		if (email.length > 0 && email.indexOf("@") > 1) {
 			if (password.length > 0) {
 				if (password == passwordConfirm) {
 					auth.createUserWithEmailAndPassword(email, password)
 						.then(function () {
 							showAlert("Usuari creat correctament", "alert-success");
-	
-							// Crear una categoría para el nuevo usuario
-							db.collection("categories").doc(email).set({ name: email })
-								.then(function () {
-									console.log("Categoría creada para el nuevo usuario:", email);
-								})
-								.catch(function (error) {
-									console.error("Error al crear la categoría para el nuevo usuario:", error);
-								});
-	
+
 							document.getElementById("loginForm").style.display = "block";
 							document.getElementById("signupForm").style.display = "none";
 						})
 						.catch(function (error) {
-							console.error("Error al intentar crear el usuario:", error);
-							if (error.code === 'auth/email-already-in-use') {
-								showAlert("La dirección de correo electrónico ya está en uso", "alert-danger");
-							} else if (error.code === 'auth/weak-password') {
-								showAlert("La contraseña debe tener al menos 6 caracteres", "alert-danger");
-							} else {
-								showAlert("Error al intentar crear l'usuari", "alert-danger");
-							}
+							showAlert("Error al intentar crear l'usuari", "alert-danger");
 						});
 				} else {
-					showAlert("Las contraseñas no coinciden", "alert-danger");
+					showAlert("Les contrasenyes no coincideixen", "alert-danger");
 				}
 			} else {
-				showAlert("La contraseña es obligatoria", "alert-danger");
+				showAlert("La contrasenya és obligatòria", "alert-danger");
 			}
 		} else {
-			showAlert("Correo electrónico incorrecto", "alert-danger");
+			showAlert("Email incorrecte", "alert-danger");
 		}
 	});
-	
-	
 
 	document.getElementById("save").addEventListener("click", function () {
 		let id = document.getElementById("elementId").value;
-		let title = document.getElementById("title").value;
-		let content = document.getElementById("content").value;
-		let image = document.getElementById("image").files[0];
+		let aplicacion= document.getElementById("aplicacion").value;
+		let usuario = document.getElementById("usuario").value;
+		let contrasenya = document.getElementById("contrasenya").value;
+		let logo = document.getElementById("logo").files[0];
 		let doc = {
-			content: content,
-			title: title
+			aplicicion: aplicicion,
+			usuario: usuario,
+			contrasenya: contrasenya
 		};
 
 		if (id == "") {
-			uploadFile(image)
+			uploadFile(logo)
 				.then((imageUrl) => {
-					doc.image = imageUrl;
+					doc.logo = imageUrl;
 					addItem(doc);
 				})
 				.catch(() => {
@@ -241,9 +225,9 @@
 				let currentImageUrl = document.getElementById("thumbnail").src;
 				deleteFile(currentImageUrl)
 					.then(() => {
-						uploadFile(image)
+						uploadFile(logo)
 							.then((imageUrl) => {
-								doc.image = imageUrl;
+								doc.logo = imageUrl;
 								updateItem(id, doc);
 							})
 							.catch(() => {
@@ -261,57 +245,9 @@
 		imatgeModificada = false;
 	});
 
-	document.getElementById("image").addEventListener("change", function () {
+	document.getElementById("logo").addEventListener("change", function () {
 		imatgeModificada = true;
 	});
-	document.getElementById("login").addEventListener("click", function () {
-		let email = document.getElementById("loginEmail").value;
-		let password = document.getElementById("loginPassword").value;
-	
-		auth.signInWithEmailAndPassword(email, password)
-			.then(function () {
-				showAlert("Usuari autenticat", "alert-success");
-	
-				// Guardar el correo electrónico del usuario
-				let userEmail = email;
-	
-				document.getElementById("loginForm").style.display = "none";
-				document.getElementById("itemsForm").style.display = "block";
-				document.getElementById("listItems").style.display = "table";
-	
-				// Pasar el correo electrónico del usuario a la función uploadFile
-				document.getElementById("save").addEventListener("click", function () {
-					let id = document.getElementById("elementId").value;
-					let title = document.getElementById("title").value;
-					let content = document.getElementById("content").value;
-					let image = document.getElementById("image").files[0];
-					let doc = {
-						content: content,
-						title: title
-					};
-	
-					if (id == "") {
-						uploadFile(image, userEmail) // Pasar userEmail como argumento
-							.then((imageUrl) => {
-								doc.image = imageUrl;
-								addItem(doc);
-							})
-							.catch(() => {
-								showAlert("Error al intentar guardar l'element", "alert-danger");
-							});
-					} else {
-						// Resto del código de save
-					}
-	
-					imatgeModificada = false;
-				});
-	
-			})
-			.catch(function (error) {
-				showAlert("Error d’autenticació", "alert-danger");
-			});
-	});
-	
 
 </script>
 
