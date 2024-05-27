@@ -1,10 +1,10 @@
 const contrasenyes = db.collection("contrasenyes");
 const usuaris = db.collection("usuaris");
 
-function addItem(doc) {
-    add(items, doc)
+function addUsuari(doc) {
+    add(usuaris, doc)
         .then(() => {
-            loadItems();
+            // loadItems();
 
             document.getElementById("aplicacion").value = "";
             document.getElementById("usuario").value = "";

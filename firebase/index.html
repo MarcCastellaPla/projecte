@@ -121,7 +121,7 @@
 <script language="javascript" src="js/config.js"></script>
 <script language="javascript" src="js/firestore.js"></script>
 <script language="javascript" src="js/storage.js"></script>
-<script language="javascript" src="js/items.js"></script>
+<script language="javascript" src="js/usuaris.js"></script>
 <script language="javascript">
 
 	let imatgeModificada = false;
@@ -215,7 +215,7 @@
 			uploadFile(logo)
 				.then((imageUrl) => {
 					doc.logo = imageUrl;
-					addItem(doc);
+					addUsuari(doc);
 				})
 				.catch(() => {
 					showAlert("Error al intentar guardar l'element", "alert-danger");
