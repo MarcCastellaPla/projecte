@@ -31,7 +31,7 @@ function deleteItem(id) {
 function editItem(id) {
     document.getElementById("elementId").value = id;
     document.getElementById("thumbnail").style.visibility = "visible";
-    selectById(contrasenyes, id)
+    selectById(usuaris, id)
         .then((doc) => {
             document.getElementById("aplicacion").value = doc.data().aplicacion;
             document.getElementById("usuario").value = doc.data().usuario;
@@ -88,14 +88,15 @@ function loadItems() {
 }
 
 function updateItem(id, doc) {
-    updateById(contrasenyes, id, doc)
+    updateById(usuaris, id, doc)
         .then(() => {
             loadItems();
 
             document.getElementById("elementId").value = "";
-            document.getElementById("title").value = "";
-            document.getElementById("content").value = "";
-            document.getElementById("image").value = "";
+            document.getElementById("aplicacion").value = "";
+            document.getElementById("usuario").value = "";
+            document.getElementById("contrasenya").value = "";
+            document.getElementById("logo").value = "";
             document.getElementById("thumbnail").style.visibility = "hidden";
 
             showAlert("Element actualitzat correctament", "alert-success");
