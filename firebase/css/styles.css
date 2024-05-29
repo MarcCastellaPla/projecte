@@ -11,3 +11,6 @@ body {
 label {
     color: white;
 }
+.oculta {
+    display: none;
+}
