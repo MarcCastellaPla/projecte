@@ -44,7 +44,7 @@ function editItem(id) {
 }
 
 function loadItems() {
-    selectAll(contrasenyes)
+    selectAll(usuaris)
     // selectAll(items, "title")
     // selectWhere(items, "title", "==", "Firma")
     // selectLike(items, "title", "F")
@@ -58,14 +58,15 @@ function loadItems() {
             arrayItems.forEach((docItem) => {
                 let logo = "";
                 if (docItem.data().logo != null) {
-                    logo = `<img src="${docItem.data().image}" class="rounded" style="max-width: 100px; max-height: 100px;" "alt="${docItem.data().title}">`;
+                    logo = `<img src="${docItem.data().logo}" class="rounded" style="max-width: 100px; max-height: 100px;" "alt="${docItem.data().title}">`;
                 }
-                selectById(usuaris, docItem.data().category.id)
+                selectAll(usuaris)
                     .then((docCategory) => {
                         document.getElementById("listItems").innerHTML += `<tr>
                                                                         <td>${logo}</td>
-                                                                        <td>${docItem.data().title} - ${docCategory.data().name}</td>
-                                                                        <td>${docItem.data().content}</td>
+                                                                        <td>${docItem.data().aplicacion}</td>
+                                                                        <td>${docItem.data().usuario}</td>
+                                                                        <td>${docItem.data().contrasenya}</td>
                                                                         <td>
                                                                             <button type="button" class="btn btn-danger float-right" onclick="eliminar('${docItem.id}', '${docItem.data().image}')">
                                                                                 Eliminar
