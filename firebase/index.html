@@ -127,6 +127,7 @@
 	let imatgeModificada = false;
 
 	function eliminar(itemId, imageUrl) {
+		
 		deleteFile(imageUrl)
 			.then(() => {
 				deleteItem(itemId);

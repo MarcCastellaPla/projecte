@@ -19,7 +19,7 @@ function addUsuari(doc) {
 }
 
 function deleteItem(id) {
-    deleteById(contrasenyes, id)
+    deleteById(usuaris, id)
         .then(() => {
             loadItems();
             showAlert("Element eliminat correctament", "alert-success");
@@ -68,7 +68,7 @@ function loadItems() {
                                                                         <td>${docItem.data().usuario}</td>
                                                                         <td>${docItem.data().contrasenya}</td>
                                                                         <td>
-                                                                            <button type="button" class="btn btn-danger float-right" onclick="eliminar('${docItem.id}', '${docItem.data().image}')">
+                                                                            <button type="button" class="btn btn-danger float-right" onclick="eliminar('${docItem.id}', '${docItem.data().logo}')">
                                                                                 Eliminar
                                                                             </button>
                                                                             <button type="button" class="btn btn-primary mr-2 float-right" onclick="editItem('${docItem.id}')">
