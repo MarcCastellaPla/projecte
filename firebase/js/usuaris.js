@@ -66,7 +66,7 @@ function loadItems() {
                                                                         <td>${logo}</td>
                                                                         <td>${docItem.data().aplicacion}</td>
                                                                         <td>${docItem.data().usuario}</td>
-                                                                        <td><span id="contrasenyaOculta">${docItem.data().contrasenya}</span><button id="botoContrasenya">Mostrar/Ocultar</button><button id="botoCopiarContrasenya">Copiar</button></td>
+                                                                        <td>${docItem.data().contrasenya}</td>
                                                                         <td>
                                                                             <button type="button" class="btn btn-danger float-right" onclick="eliminar('${docItem.id}', '${docItem.data().logo}')">
                                                                                 Eliminar
