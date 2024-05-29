@@ -22,7 +22,7 @@
 					<div class="form-group row">
 						<label for="title" class="col-4 col-form-label">Correu electrònic:</label>
 						<div class="col-8">
-							<input type="email" class="form-control" id="loginEmail" value="user@gmail.com">
+							<input type="email" class="form-control" id="loginEmail">
 						</div>
 					</div>
 					<div class="form-group row">
@@ -206,10 +206,12 @@
 		let usuario = document.getElementById("usuario").value;
 		let contrasenya = document.getElementById("contrasenya").value;
 		let logo = document.getElementById("logo").files[0];
+		let email = document.getElementById("loginEmail").value;
 		let doc = {
 			aplicacion: aplicacion,
 			usuario: usuario,
-			contrasenya: contrasenya
+			contrasenya: contrasenya,
+			email: email
 		};
 
 		if (id == "") {

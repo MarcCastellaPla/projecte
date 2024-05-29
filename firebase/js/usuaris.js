@@ -44,7 +44,9 @@ function editItem(id) {
 }
 
 function loadItems() {
+    
     selectAll(usuaris)
+    
     // selectAll(items, "title")
     // selectWhere(items, "title", "==", "Firma")
     // selectLike(items, "title", "F")
@@ -60,22 +62,25 @@ function loadItems() {
                 if (docItem.data().logo != null) {
                     logo = `<img src="${docItem.data().logo}" class="rounded" style="max-width: 100px; max-height: 100px;" "alt="${docItem.data().title}">`;
                 }
+                let email = document.getElementById("loginEmail").value;
+                let emailImatge = docItem.data().email;
+                console.log(emailImatge)
+                console.log(email)
                 selectAll(usuaris)
+                // selectWhere(usuaris, emailImatge, "==", email)
                     .then((docCategory) => {
                         document.getElementById("listItems").innerHTML += `<tr>
-                                                                        <td>${logo}</td>
-                                                                        <td>${docItem.data().aplicacion}</td>
-                                                                        <td>${docItem.data().usuario}</td>
-                                                                        <td>${docItem.data().contrasenya}</td>
-                                                                        <td>
-                                                                            <button type="button" class="btn btn-danger float-right" onclick="eliminar('${docItem.id}', '${docItem.data().logo}')">
-                                                                                Eliminar
-                                                                            </button>
-                                                                            <button type="button" class="btn btn-primary mr-2 float-right" onclick="editItem('${docItem.id}')">
-                                                                                Editar
-                                                                            </button>
-                                                                        </td>
-                                                                    </tr>`;
+                                                                    <td>${logo}</td>
+                                                                    <td>${docItem.data().aplicacion}</td>
+                                                                    <td>${docItem.data().usuario}</td>
+                                                                    <td id="password-${docItem.id}" data-password="${docItem.data().contrasenya}">*********</td>
+                                                                    <td>
+                                                                        <button type="button" class="btn btn-danger float-right" onclick="eliminar('${docItem.id}', '${docItem.data().logo}')">Eliminar</button>
+                                                                        <button type="button" class="btn btn-primary mr-2 float-right" onclick="editItem('${docItem.id}')">Editar</button>
+                                                                        <button type="button" class="btn btn-secondary mr-2 float-right" onclick="togglePasswordVisibility('${docItem.id}')">Mostrar/Ocultar</button>
+                                                                        <button type="button" class="btn btn-secondary mr-2 float-right" onclick="copyPassword('${docItem.id}')">Copiar</button>
+                                                                    </td>
+                                                                </tr>`;
                     })
                     .catch(() => {
                         showAlert("Error al mostrar els elements", "alert-danger");
@@ -86,7 +91,28 @@ function loadItems() {
             showAlert("Error al mostrar els elements", "alert-danger");
         });
 }
+function togglePasswordVisibility(id) {
+    const passwordField = document.getElementById(`password-${id}`);
+    if (passwordField.textContent === '}">*********</') {
+        passwordField.textContent = passwordField.getAttribute('data-password');
+    } else {
+        passwordField.textContent = '}">*********</';
+    }
+}
 
+function copyPassword(id) {
+    const passwordField = document.getElementById(`password-${id}`);
+    const password = passwordField.getAttribute('data-password');
+
+    const tempTextArea = document.createElement("textarea");
+    tempTextArea.value = password;
+    document.body.appendChild(tempTextArea);
+    tempTextArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempTextArea);
+
+    showAlert("Contrasenya copiada al porta-retalls", "alert-success");
+}
 function updateItem(id, doc) {
     updateById(usuaris, id, doc)
         .then(() => {
