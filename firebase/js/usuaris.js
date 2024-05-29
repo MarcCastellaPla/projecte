@@ -62,12 +62,7 @@ function loadItems() {
                 if (docItem.data().logo != null) {
                     logo = `<img src="${docItem.data().logo}" class="rounded" style="max-width: 100px; max-height: 100px;" "alt="${docItem.data().title}">`;
                 }
-                let email = document.getElementById("loginEmail").value;
-                let emailImatge = docItem.data().email;
-                console.log(emailImatge)
-                console.log(email)
                 selectAll(usuaris)
-                // selectWhere(usuaris, emailImatge, "==", email)
                     .then((docCategory) => {
                         document.getElementById("listItems").innerHTML += `<tr>
                                                                     <td>${logo}</td>
@@ -93,10 +88,10 @@ function loadItems() {
 }
 function togglePasswordVisibility(id) {
     const passwordField = document.getElementById(`password-${id}`);
-    if (passwordField.textContent === '}">*********</') {
+    if (passwordField.textContent === '*********') {
         passwordField.textContent = passwordField.getAttribute('data-password');
     } else {
-        passwordField.textContent = '}">*********</';
+        passwordField.textContent = '*********';
     }
 }
 
