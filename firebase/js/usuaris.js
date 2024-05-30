@@ -1,31 +1,22 @@
+const contrasenyes = db.collection("contrasenyes");
 const usuaris = db.collection("usuaris");
-const grups = db.collection("grups");
-
-
 
 function addUsuari(doc) {
-    let user = firebase.auth().currentUser;
-    if (user) {
-        doc.userId = user.uid;  // Add the UID of the authenticated user to the document
-        add(usuaris, doc)
-            .then(() => {
-                document.getElementById("aplicacion").value = "";
-                document.getElementById("usuario").value = "";
-                document.getElementById("contrasenya").value = "";
-                document.getElementById("logo").value = "";
+    add(usuaris, doc)
+        .then(() => {
+            // loadItems();
 
-                showAlert("Element guardat correctament", "alert-success");
-            })
-            .catch(() => {
-                showAlert("Error al intentar guardar l'element", "alert-danger");
-            });
-    } else {
-        showAlert("No hi ha cap usuari autenticat", "alert-danger");
-    }
+            document.getElementById("aplicacion").value = "";
+            document.getElementById("usuario").value = "";
+            document.getElementById("contrasenya").value = "";
+            document.getElementById("logo").value = "";
+
+            showAlert("Element guardat correctament", "alert-success");
+        })
+        .catch(() => {
+            showAlert("Error al intentar guardar l'element", "alert-danger");
+        });
 }
-
-// El resto del contenido de usuaris.js permanece igual
-
 
 function deleteItem(id) {
     deleteById(usuaris, id)
@@ -53,39 +44,47 @@ function editItem(id) {
 }
 
 function loadItems() {
-    let user = firebase.auth().currentUser;
-    if (user) {
-        selectWhere(usuaris, "userId", "==", user.uid)  // Obtener solo los documentos del usuario autenticado
-            .then((arrayItems) => {
-                document.getElementById("listItems").innerHTML = `<tr>
-                    <th>Logo</th>
-                    <th>Aplicació</th>
-                    <th>Usuario</th>
-                    <th>Contraseña</th>
-                </tr>`;
-                arrayItems.forEach((docItem) => {
-                    let logo = "";
-                    if (docItem.data().logo != null) {
-                        logo = `<img src="${docItem.data().logo}" class="rounded" style="max-width: 100px; max-height: 100px;" alt="${docItem.data().title}">`;
-                    }
-                    document.getElementById("listItems").innerHTML += `<tr>
-                        <td>${logo}</td>
-                        <td>${docItem.data().aplicacion}</td>
-                        <td>${docItem.data().usuario}</td>
-                        <td id="password-${docItem.id}" data-password="${docItem.data().contrasenya}">*********</td>
-                        <td>
-                            <button type="button" class="btn btn-danger float-right" onclick="eliminar('${docItem.id}', '${docItem.data().logo}')">Eliminar</button>
-                            <button type="button" class="btn btn-primary mr-2 float-right" onclick="editItem('${docItem.id}')">Editar</button>
-                            <button type="button" class="btn btn-secondary mr-2 float-right" onclick="togglePasswordVisibility('${docItem.id}')">Mostrar/Ocultar</button>
-                            <button type="button" class="btn btn-secondary mr-2 float-right" onclick="copyPassword('${docItem.id}')">Copiar</button>
-                        </td>
-                    </tr>`;
-                });
-            })
-            .catch(() => {
-                showAlert("Error al mostrar els elements", "alert-danger");
+    
+    selectAll(usuaris)
+    
+    // selectAll(items, "title")
+    // selectWhere(items, "title", "==", "Firma")
+    // selectLike(items, "title", "F")
+        .then((arrayItems) => {
+            document.getElementById("listItems").innerHTML = `<tr>
+																<th>Logo</th>
+																<th>Aplicació</th>
+																<th>Usuario</th>
+																<th>Contraseña</th>
+															</tr>`;
+            arrayItems.forEach((docItem) => {
+                let logo = "";
+                if (docItem.data().logo != null) {
+                    logo = `<img src="${docItem.data().logo}" class="rounded" style="max-width: 100px; max-height: 100px;" "alt="${docItem.data().title}">`;
+                }
+                selectAll(usuaris)
+                    .then((docCategory) => {
+                        document.getElementById("listItems").innerHTML += `<tr>
+                                                                    <td>${logo}</td>
+                                                                    <td>${docItem.data().aplicacion}</td>
+                                                                    <td>${docItem.data().usuario}</td>
+                                                                    <td id="password-${docItem.id}" data-password="${docItem.data().contrasenya}">*********</td>
+                                                                    <td>
+                                                                        <button type="button" class="btn btn-danger float-right" onclick="eliminar('${docItem.id}', '${docItem.data().logo}')">Eliminar</button>
+                                                                        <button type="button" class="btn btn-primary mr-2 float-right" onclick="editItem('${docItem.id}')">Editar</button>
+                                                                        <button type="button" class="btn btn-secondary mr-2 float-right" onclick="togglePasswordVisibility('${docItem.id}')">Mostrar/Ocultar</button>
+                                                                        <button type="button" class="btn btn-secondary mr-2 float-right" onclick="copyPassword('${docItem.id}')">Copiar</button>
+                                                                    </td>
+                                                                </tr>`;
+                    })
+                    .catch(() => {
+                        showAlert("Error al mostrar els elements", "alert-danger");
+                    });
             });
-    }
+        })
+        .catch(() => {
+            showAlert("Error al mostrar els elements", "alert-danger");
+        });
 }
 function togglePasswordVisibility(id) {
     const passwordField = document.getElementById(`password-${id}`);
