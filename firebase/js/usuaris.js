@@ -1,4 +1,4 @@
-const contrasenyes = db.collection("contrasenyes");
+const grups = db.collection("grups");
 const usuaris = db.collection("usuaris");
 
 function addUsuari(doc) {
@@ -10,11 +10,25 @@ function addUsuari(doc) {
             document.getElementById("usuario").value = "";
             document.getElementById("contrasenya").value = "";
             document.getElementById("logo").value = "";
+            document.getElementById("grup").value = "";
 
             showAlert("Element guardat correctament", "alert-success");
         })
         .catch(() => {
             showAlert("Error al intentar guardar l'element", "alert-danger");
+        });
+}
+function addGrup(docGrup) {
+    add(grups, docGrup)
+        .then(() => {
+            // loadItems();
+
+            document.getElementById("grup").value = "";
+
+            showAlert("Grup guardat correctament", "alert-success");
+        })
+        .catch(() => {
+            showAlert("Error al intentar guardar el grup", "alert-danger");
         });
 }
 
@@ -37,6 +51,7 @@ function editItem(id) {
             document.getElementById("usuario").value = doc.data().usuario;
             document.getElementById("contrasenya").value = doc.data().contrasenya;
             document.getElementById("thumbnail").src = doc.data().logo;
+            document.getElementById("grup").value = doc.data().grup;
         })
         .catch(() => {
             showAlert("Error al intentar editar l'element", "alert-danger");
@@ -118,6 +133,7 @@ function updateItem(id, doc) {
             document.getElementById("usuario").value = "";
             document.getElementById("contrasenya").value = "";
             document.getElementById("logo").value = "";
+            document.getElementById("grup").value = "";
             document.getElementById("thumbnail").style.visibility = "hidden";
 
             showAlert("Element actualitzat correctament", "alert-success");

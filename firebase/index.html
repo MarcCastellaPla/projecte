@@ -22,7 +22,7 @@
 					<div class="form-group row">
 						<label for="title" class="col-4 col-form-label">Correu electrònic:</label>
 						<div class="col-8">
-							<input type="email" class="form-control" id="loginEmail">
+							<input type="email" class="form-control" id="loginEmail" value="user@gmail.com">
 						</div>
 					</div>
 					<div class="form-group row">
@@ -87,6 +87,12 @@
 						<label for="contrasenya" class="col-4 col-form-label">Contraseña:</label>
 						<div class="col-8">
 							<input type="password" class="form-control" id="contrasenya">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="grup" class="col-4 col-form-label">Grup:</label>
+						<div class="col-8">
+							<input type="text" class="form-control" id="grup">
 						</div>
 					</div>
 					<div class="form-group row">
@@ -207,6 +213,16 @@
 		let contrasenya = document.getElementById("contrasenya").value;
 		let logo = document.getElementById("logo").files[0];
 		let email = document.getElementById("loginEmail").value;
+		let grup = document.getElementById("grup").value;
+		
+		if (grup) {
+			let docGrup = {
+				nom: grup
+			}
+			addGrup(docGrup)
+		}
+		imatgeModificada = false;
+
 		let doc = {
 			aplicacion: aplicacion,
 			usuario: usuario,
@@ -244,7 +260,7 @@
 				updateItem(id, doc);
 			}
 		}
-		imatgeModificada = false;
+
 	});
 
 	document.getElementById("logo").addEventListener("change", function () {
