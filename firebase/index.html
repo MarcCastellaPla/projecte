@@ -2,31 +2,30 @@
 <html>
 
 <head>
-	<meta charset="utf-8">
-	<title>Items</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-firestore.js"></script>
-	<link rel="stylesheet" href="css/styles.css">
+    <meta charset="utf-8">
+    <title>Items</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-firestore.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
-	<div class="container p-5">
-		<div class="row">
-
+    <div class="container p-5">
+        <div class="row">
 			<div class="col-8 offset-2" id="loginForm">
 				<form>
 					<div class="form-group row">
-						<label for="title" class="col-4 col-form-label">Correu electrònic:</label>
+						<label for="loginEmail" class="col-4 col-form-label">Correu electrònic:</label>
 						<div class="col-8">
 							<input type="email" class="form-control" id="loginEmail">
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="content" class="col-4 col-form-label">Contrasenya:</label>
+						<label for="loginPassword" class="col-4 col-form-label">Contrasenya:</label>
 						<div class="col-8">
 							<input type="password" class="form-control" id="loginPassword" value="Admin1234">
 						</div>
@@ -40,131 +39,91 @@
 					</div>
 				</form>
 			</div>
+			
 
-			<div class="col-8 offset-2" id="signupForm" style="display: none;">
-				<form>
-					<div class="form-group row">
-						<label for="title" class="col-4 col-form-label">Correu electrònic:</label>
-						<div class="col-8">
-							<input type="email" class="form-control" id="signupEmail">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label for="content" class="col-4 col-form-label">Contrasenya:</label>
-						<div class="col-8">
-							<input type="password" class="form-control" id="signupPassword">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label for="content" class="col-4 col-form-label">Confirmar contrasenya:</label>
-						<div class="col-8">
-							<input type="password" class="form-control" id="signupPasswordConfirm">
-						</div>
-					</div>
-					<div class="form-group row">
-						<div class="offset-4 col-8">
-							<button type="button" id="signup" class="btn btn-default float-right">Enviar</button>
-						</div>
-					</div>
-				</form>
-			</div>
+            <div class="col-8 offset-2" id="signupForm" style="display: none;">
+                <form>
+                    <div class="form-group row">
+                        <label for="title" class="col-4 col-form-label">Correu electrònic:</label>
+                        <div class="col-8">
+                            <input type="email" class="form-control" id="signupEmail">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="content" class="col-4 col-form-label">Contrasenya:</label>
+                        <div class="col-8">
+                            <input type="password" class="form-control" id="signupPassword">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="content" class="col-4 col-form-label">Confirmar contrasenya:</label>
+                        <div class="col-8">
+                            <input type="password" class="form-control" id="signupPasswordConfirm">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="offset-4 col-8">
+                            <button type="button" id="signup" class="btn btn-default float-right">Enviar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
-			<div class="col-8 offset-2" id="itemsForm" style="display: none;">
-				<form>
-					<div class="form-group row">
-						<label for="aplicacion" class="col-4 col-form-label">Aplicación:</label>
-						<div class="col-8">
-							<input type="text" class="form-control" id="aplicacion">
-						</div>
+            <div class="col-8 offset-2" id="itemsForm" style="display: none;">
+                <form>
+                    <div class="form-group row">
+                        <label for="aplicacion" class="col-4 col-form-label">Aplicación:</label>
+                        <div class="col-8">
+                            <input type="text" class="form-control" id="aplicacion">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="usuario" class="col-4 col-form-label">Usuario:</label>
+                        <div class="col-8">
+                            <input type="text" class="form-control" id="usuario">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="contrasenya" class="col-4 col-form-label">Contrasenya:</label>
+                        <div class="col-8">
+                            <input type="password" class="form-control" id="contrasenya">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="logo" class="col-4 col-form-label">Logo:</label>
+                        <div class="col-8">
+                            <input type="file" class="form-control" id="logo" onchange="uploadLogo()">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="offset-4 col-8">
+                            <input type="hidden" id="elementId" value="">
+							<button type="button" class="btn btn-outline-primary float-right fonsBlau" onclick="guardar()">Guardar</button>
+							<button type="button" class="btn btn-default float-right mr-3" onclick="resetForm()">Nou element</button>							
+						<button type="button" class="btn btn-default float-right mr-3" onclick="resetForm()">Nou
+							element</button>
 					</div>
-					<div class="form-group row">
-						<label for="usuario" class="col-4 col-form-label">Usuario:</label>
-						<div class="col-8">
-							<input type="text" class="form-control" id="usuario">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label for="contrasenya" class="col-4 col-form-label">Contraseña:</label>
-						<div class="col-8">
-							<input type="password" class="form-control" id="contrasenya">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label for="logo" class="col-4 col-form-label">Logo:</label>
-						<div class="col-6 lletraBlanca">
-							<input type="file" class="form-control-file" id="logo">
-						</div>
-						<div class="col-2">
-							<img class="rounded" id="thumbnail"
-								style="max-width: 60px; max-height: 60px; visibility: hidden;" alt="imatge">
-						</div>
-					</div>
-					<div class="form-group row">
-						<div class="offset-4 col-8">
-							<button type="button" id="save" class="btn btn-default float-right">Guardar</button>
-						</div>
-					</div>
-					<input type="hidden" id="elementId">
-				</form>
-			</div>
-
-			<div class="col-2">
-				<div id="alert" role="alert"></div>
-			</div>
+				</div>
+			</form>
+			<img id="thumbnail" src="" style="visibility: hidden; max-width: 100px;">
 		</div>
-		<div class="table-responsive">
-			<table class="table table-hover lletraBlanca" id="listItems" style="display: none;">
+
+		<div class="col-12 mt-5">
+			<table class="table" id="listItems">
+				<!-- Aquí se listarán los items -->
 			</table>
 		</div>
+
 	</div>
-</body>
-<script language="javascript" src="js/config.js"></script>
-<script language="javascript" src="js/firestore.js"></script>
-<script language="javascript" src="js/storage.js"></script>
-<script language="javascript" src="js/usuaris.js"></script>
+</div>
+<script src="js/config.js"></script>
+<script src="js/firestore.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/usuaris.js"></script>
+
+
 <script language="javascript">
-
-	let imatgeModificada = false;
-
-	function eliminar(itemId, imageUrl) {
-		
-		deleteFile(imageUrl)
-			.then(() => {
-				deleteItem(itemId);
-			}).catch(() => {
-				showAlert("Error al intentar eliminar la imatge", "alert-danger");
-			});
-	}
-
-	function showAlert(text, type) {
-		document.getElementById("alert").innerText = text;
-		document.getElementById("alert").className = "alert " + type;
-		document.getElementById("alert").style.display = "block";
-		window.setTimeout(function () {
-			document.getElementById("alert").style.display = "none";
-		}, 2000);
-	}
-
-	window.addEventListener("load", function () {
-		loadItems();
-	});
-
-	document.getElementById("login").addEventListener("click", function () {
-		let email = document.getElementById("loginEmail").value;
-		let password = document.getElementById("loginPassword").value;
-
-		auth.signInWithEmailAndPassword(email, password)
-			.then(function () {
-				showAlert("Usuari autenticat", "alert-success");
-
-				document.getElementById("loginForm").style.display = "none";
-				document.getElementById("itemsForm").style.display = "block";
-				document.getElementById("listItems").style.display = "table";
-			})
-			.catch(function (error) {
-				showAlert("Error d’autenticació", "alert-danger");
-			});
-	});
+	// Tu script de autenticación y gestión de usuarios va aquí
 
 	document.getElementById("newUser").addEventListener("click", function () {
 		document.getElementById("loginForm").style.display = "none";
@@ -176,81 +135,184 @@
 		let password = document.getElementById("signupPassword").value;
 		let passwordConfirm = document.getElementById("signupPasswordConfirm").value;
 
-		if (email.length > 0 && email.indexOf("@") > 1) {
-			if (password.length > 0) {
-				if (password == passwordConfirm) {
-					auth.createUserWithEmailAndPassword(email, password)
-						.then(function () {
-							showAlert("Usuari creat correctament", "alert-success");
-
-							document.getElementById("loginForm").style.display = "block";
-							document.getElementById("signupForm").style.display = "none";
-						})
-						.catch(function (error) {
-							showAlert("Error al intentar crear l'usuari", "alert-danger");
-						});
-				} else {
-					showAlert("Les contrasenyes no coincideixen", "alert-danger");
-				}
-			} else {
-				showAlert("La contrasenya és obligatòria", "alert-danger");
-			}
-		} else {
-			showAlert("Email incorrecte", "alert-danger");
+		if (password !== passwordConfirm) {
+			showAlert("Les contrasenyes no coincideixen", "alert-danger");
+			return;
 		}
-	});
 
-	document.getElementById("save").addEventListener("click", function () {
-		let id = document.getElementById("elementId").value;
-		let aplicacion= document.getElementById("aplicacion").value;
-		let usuario = document.getElementById("usuario").value;
-		let contrasenya = document.getElementById("contrasenya").value;
-		let logo = document.getElementById("logo").files[0];
-		let email = document.getElementById("loginEmail").value;
-		let doc = {
-			aplicacion: aplicacion,
-			usuario: usuario,
-			contrasenya: contrasenya,
-			email: email
-		};
-
-		if (id == "") {
-			uploadFile(logo)
-				.then((imageUrl) => {
-					doc.logo = imageUrl;
-					addUsuari(doc);
-				})
-				.catch(() => {
-					showAlert("Error al intentar guardar l'element", "alert-danger");
-				});
-		} else {
-			if (imatgeModificada) {
-				let currentImageUrl = document.getElementById("thumbnail").src;
-				deleteFile(currentImageUrl)
+		auth.createUserWithEmailAndPassword(email, password)
+			.then(function (userCredential) {
+				let user = userCredential.user;
+				let doc = {
+					email: user.email,
+					userId: user.uid,
+					group: 'default'  // Puedes cambiar esto según la lógica de tu aplicación
+				};
+				add(usuaris, doc)
 					.then(() => {
-						uploadFile(logo)
-							.then((imageUrl) => {
-								doc.logo = imageUrl;
-								updateItem(id, doc);
-							})
-							.catch(() => {
-								showAlert("Error al intentar actualitzat l'element", "alert-danger");
-							});
+						showAlert("Usuari registrat", "alert-success");
+						document.getElementById("signupForm").style.display = "none";
+						document.getElementById("loginForm").style.display = "block";
 					})
 					.catch(() => {
-						showAlert("Error al intentar actualitzat l'element", "alert-danger");
+						showAlert("Error al registrar l'usuari", "alert-danger");
 					});
-			} else {
-				updateItem(id, doc);
-			}
-		}
-		imatgeModificada = false;
+			})
+			.catch(function (error) {
+				showAlert("Error al registrar l'usuari", "alert-danger");
+			});
 	});
 
-	document.getElementById("logo").addEventListener("change", function () {
-		imatgeModificada = true;
+	document.getElementById("login").addEventListener("click", function () {
+		let email = document.getElementById("loginEmail").value;
+		let password = document.getElementById("loginPassword").value;
+
+		auth.signInWithEmailAndPassword(email, password)
+			.then(function (userCredential) {
+				let user = userCredential.user;
+				return selectWhere(usuaris, "email", "==", user.email)
+					.then((docs) => {
+						if (docs.length > 0) {
+							let userDoc = docs[0].data();
+							localStorage.setItem('userGroup', userDoc.group);
+						}
+						showAlert("Usuari autenticat", "alert-success");
+
+						document.getElementById("loginForm").style.display = "none";
+						document.getElementById("itemsForm").style.display = "block";
+						document.getElementById("listItems").style.display = "table";
+						loadItems();
+					});
+			})
+			.catch(function (error) {
+				showAlert("Error d’autenticació", "alert-danger");
+			});
 	});
-	
-</script>
+
+	function showAlert(message, alertType) {
+		let alert = document.createElement("div");
+		alert.className = `alert ${alertType}`;
+		alert.appendChild(document.createTextNode(message));
+		document.body.appendChild(alert);
+		setTimeout(() => alert.remove(), 3000);
+	}
+
+	function loadItems() {
+		let user = firebase.auth().currentUser;
+		if (user) {
+			selectWhere(usuaris, "userId", "==", user.uid)
+				.then((arrayItems) => {
+					document.getElementById("listItems").innerHTML = `<tr>
+						<th>Logo</th>
+						<th>Aplicació</th>
+						<th>Usuario</th>
+						<th>Contraseña</th>
+					</tr>`;
+					arrayItems.forEach((docItem) => {
+						let logo = "";
+						if (docItem.data().logo != null) {
+							logo = `<img src="${docItem.data().logo}" class="rounded" style="max-width: 100px; max-height: 100px;" alt="${docItem.data().title}">`;
+						}
+						document.getElementById("listItems").innerHTML += `<tr>
+							<td>${logo}</td>
+							<td>${docItem.data().aplicacion}</td>
+							<td>${docItem.data().usuario}</td>
+							<td id="password-${docItem.id}" data-password="${docItem.data().contrasenya}">*********</td>
+							<td>
+								<button type="button" class="btn btn-danger float-right" onclick="eliminar('${docItem.id}', '${docItem.data().logo}')">Eliminar</button>
+								<button type="button" class="btn btn-primary mr-2 float-right" onclick="editItem('${docItem.id}')">Editar</button>
+								<button type="button"class="btn btn-secondary mr-2 float-right" onclick="togglePasswordVisibility('${docItem.id}')">Mostrar/Ocultar</button>
+                                    <button type="button" class="btn btn-secondary mr-2 float-right" onclick="copyPassword('${docItem.id}')">Copiar</button>
+                                </td>
+                            </tr>`;
+                        });
+                    })
+                    .catch(() => {
+                        showAlert("Error al mostrar els elements", "alert-danger");
+                    });
+            }
+        }
+
+        function eliminar(id, logo) {
+            deleteItem(id)
+                .then(() => {
+                    deleteFile(logo)
+                        .then(() => {
+                            showAlert("Element eliminat correctament", "alert-success");
+                        })
+                        .catch(() => {
+                            showAlert("Error al intentar eliminar el logo", "alert-danger");
+                        });
+                })
+                .catch(() => {
+                    showAlert("Error al intentar eliminar l'element", "alert-danger");
+                });
+        }
+
+        function guardar() {
+            let id = document.getElementById("elementId").value;
+            let doc = {
+                aplicacion: document.getElementById("aplicacion").value,
+                usuario: document.getElementById("usuario").value,
+                contrasenya: document.getElementById("contrasenya").value,
+                logo: document.getElementById("thumbnail").src
+            };
+            if (id) {
+                updateItem(id, doc);
+            } else {
+                addUsuari(doc);
+            }
+        }
+
+        function resetForm() {
+            document.getElementById("elementId").value = "";
+            document.getElementById("aplicacion").value = "";
+            document.getElementById("usuario").value = "";
+            document.getElementById("contrasenya").value = "";
+            document.getElementById("logo").value = "";
+            document.getElementById("thumbnail").style.visibility = "hidden";
+        }
+
+        function togglePasswordVisibility(id) {
+            const passwordField = document.getElementById(`password-${id}`);
+            if (passwordField.textContent === '*********') {
+                passwordField.textContent = passwordField.getAttribute('data-password');
+            } else {
+                passwordField.textContent = '*********';
+            }
+        }
+
+        function copyPassword(id) {
+            const passwordField = document.getElementById(`password-${id}`);
+            const password = passwordField.getAttribute('data-password');
+
+            const tempTextArea = document.createElement("textarea");
+            tempTextArea.value = password;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempTextArea);
+
+            showAlert("Contrasenya copiada al porta-retalls", "alert-success");
+        }
+
+        function uploadLogo() {
+            let file = document.getElementById("logo").files[0];
+            if (file) {
+                uploadFile(file)
+                    .then((url) => {
+                        document.getElementById("thumbnail").src = url;
+                        document.getElementById("thumbnail").style.visibility = "visible";
+                    })
+                    .catch(() => {
+                        showAlert("Error al pujar el logo", "alert-danger");
+                    });
+            }
+        }
+    </script>
+
+</body>
 
 </html>
+
+
