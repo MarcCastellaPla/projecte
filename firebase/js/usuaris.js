@@ -44,27 +44,24 @@ function editItem(id) {
 }
 
 function loadItems() {
-    
+    // Limpiar la tabla antes de cargar nuevos elementos
+    document.getElementById("listItems").innerHTML = `<tr>
+                                                        <th>Logo</th>
+                                                        <th>Aplicació</th>
+                                                        <th>Usuario</th>
+                                                        <th>Contraseña</th>
+                                                    </tr>`;
+
+    // Obtener solo las imágenes que tienen la referencia adecuada
     selectAll(usuaris)
-    
-    // selectAll(items, "title")
-    // selectWhere(items, "title", "==", "Firma")
-    // selectLike(items, "title", "F")
         .then((arrayItems) => {
-            document.getElementById("listItems").innerHTML = `<tr>
-																<th>Logo</th>
-																<th>Aplicació</th>
-																<th>Usuario</th>
-																<th>Contraseña</th>
-															</tr>`;
             arrayItems.forEach((docItem) => {
-                let logo = "";
-                if (docItem.data().logo != null) {
-                    logo = `<img src="${docItem.data().logo}" class="rounded" style="max-width: 100px; max-height: 100px;" "alt="${docItem.data().title}">`;
-                }
-                selectAll(usuaris)
-                    .then((docCategory) => {
-                        document.getElementById("listItems").innerHTML += `<tr>
+                if (docItem.data().reference && docItem.data().reference.path === "grups/ZlsSAJgzqh15T3jzOmXh") {
+                    let logo = "";
+                    if (docItem.data().logo != null) {
+                        logo = `<img src="${docItem.data().logo}" class="rounded" style="max-width: 100px; max-height: 100px;" alt="${docItem.data().title}">`;
+                    }
+                    document.getElementById("listItems").innerHTML += `<tr>
                                                                     <td>${logo}</td>
                                                                     <td>${docItem.data().aplicacion}</td>
                                                                     <td>${docItem.data().usuario}</td>
@@ -76,16 +73,14 @@ function loadItems() {
                                                                         <button type="button" class="btn btn-secondary mr-2 float-right" onclick="copyPassword('${docItem.id}')">Copiar</button>
                                                                     </td>
                                                                 </tr>`;
-                    })
-                    .catch(() => {
-                        showAlert("Error al mostrar els elements", "alert-danger");
-                    });
+                }
             });
         })
         .catch(() => {
             showAlert("Error al mostrar els elements", "alert-danger");
         });
 }
+
 function togglePasswordVisibility(id) {
     const passwordField = document.getElementById(`password-${id}`);
     if (passwordField.textContent === '*********') {

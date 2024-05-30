@@ -207,11 +207,14 @@
 		let contrasenya = document.getElementById("contrasenya").value;
 		let logo = document.getElementById("logo").files[0];
 		let email = document.getElementById("loginEmail").value;
+		let reference = firebase.firestore().collection("grups").doc("ZlsSAJgzqh15T3jzOmXh");
 		let doc = {
 			aplicacion: aplicacion,
 			usuario: usuario,
 			contrasenya: contrasenya,
-			email: email
+			email: email,
+			reference: reference
+			
 		};
 
 		if (id == "") {
