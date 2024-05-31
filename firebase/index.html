@@ -155,7 +155,9 @@
 						document.getElementById("listItems").style.display = "table";
 		
 						// Pasar el correo electrónico a la función loadItems
-						let userEmail = userCredential.user.email;
+						console.log("Abans del let")
+						let userEmail = email; // Obtener el valor del correo electrónico proporcionado por el usuario
+						console.log("Despres del let")
 						console.log("Cargando elementos para el usuario:", userEmail);
 						loadItems(userEmail);
 					})
