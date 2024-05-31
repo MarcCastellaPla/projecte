@@ -72,8 +72,9 @@ function loadItems() {
                                                                     <td>
                                                                         <button type="button" class="btn btn-danger float-right" onclick="eliminar('${docItem.id}', '${docItem.data().logo}')">Eliminar</button>
                                                                         <button type="button" class="btn btn-primary mr-2 float-right" onclick="editItem('${docItem.id}')">Editar</button>
-                                                                        <button type="button" class="btn btn-secondary mr-2 float-right" onclick="togglePasswordVisibility('${docItem.id}')">Mostrar/Ocultar</button>
-                                                                        <button type="button" class="btn btn-secondary mr-2 float-right" onclick="copyPassword('${docItem.id}')">Copiar</button>
+                                                                        <button type="button" class="btn btn-secondary mr-2 float-right" onclick="togglePasswordVisibility('${docItem.id}', this)">
+                                                                        <img src="../Ver.png" alt="Mostrar/Ocultar" style="width: 20px; height: 20px;"></button>                                                                        <button type="button" class="btn btn-secondary mr-2 float-right" onclick="copyPassword('${docItem.id}')">
+                                                                        <img src="../Copiar.png" alt="Copiar" style="width: 20px; height: 20px;"></button>
                                                                     </td>
                                                                 </tr>`;
                     })
@@ -86,12 +87,16 @@ function loadItems() {
             showAlert("Error al mostrar els elements", "alert-danger");
         });
 }
-function togglePasswordVisibility(id) {
+function togglePasswordVisibility(id, button) {
     const passwordField = document.getElementById(`password-${id}`);
     if (passwordField.textContent === '*********') {
         passwordField.textContent = passwordField.getAttribute('data-password');
+        // Cambiar la imagen a la imagen de ocultar
+        button.querySelector('img').src = '../Ocultar.png';
     } else {
         passwordField.textContent = '*********';
+        // Cambiar la imagen a la imagen de mostrar
+        button.querySelector('img').src = '../Ver.png';
     }
 }
 
