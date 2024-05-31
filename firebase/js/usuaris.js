@@ -52,39 +52,48 @@ function loadItems(userEmail) {
                                                         <th>Contraseña</th>
                                                     </tr>`;
 
-    // Obtener solo las imágenes que tienen la referencia adecuada
-    selectAll(usuaris)
-        .then((arrayItems) => {
-            console.log("Elementos obtenidos:", arrayItems);
-            arrayItems.forEach((docItem) => {
-                // Filtrar por el correo electrónico del usuario autenticado
-                if (userEmail === "user@gmail.com" && docItem.data().reference && docItem.data().reference.path === "grups/ZlsSAJgzqh15T3jzOmXh") {
-                    let logo = "";
-                    if (docItem.data().logo != null) {
-                        logo = `<img src="${docItem.data().logo}" class="rounded" style="max-width: 100px; max-height: 100px;" alt="${docItem.data().title}">`;
-                    }
-                    document.getElementById("listItems").innerHTML += `<tr>
-                                                                        <td>${logo}</td>
-                                                                        <td>${docItem.data().aplicacion}</td>
-                                                                        <td>${docItem.data().usuario}</td>
-                                                                        <td id="password-${docItem.id}" data-password="${docItem.data().contrasenya}">*********</td>
-                                                                        <td>
-                                                                            <button type="button" class="btn btn-danger float-right" onclick="eliminar('${docItem.id}', '${docItem.data().logo}')">Eliminar</button>
-                                                                            <button type="button" class="btn btn-primary mr-2 float-right" onclick="editItem('${docItem.id}')">Editar</button>
-                                                                            <button type="button" class="btn btn-secondary mr-2 float-right" onclick="togglePasswordVisibility('${docItem.id}')">Mostrar/Ocultar</button>
-                                                                            <button type="button" class="btn btn-secondary mr-2 float-right" onclick="copyPassword('${docItem.id}')">Copiar</button>
-                                                                        </td>
-                                                                    </tr>`;
-                } else if (userEmail !== "user@gmail.com") {
-                    // Lógica para cargar otros elementos si el correo no es user@gmail.com
-                }
-            });
+    // Obtener el documento de "grups" correspondiente al correo electrónico del usuario
+    selectById(grups, userEmail)
+        .then((doc) => {
+            if (doc.exists) {
+                // Filtrar documentos en "usuaris" que tienen una referencia al documento de "grups"
+                selectWhere(usuaris, "reference", "==", doc.ref)
+                    .then((arrayItems) => {
+                        console.log("Elementos obtenidos:", arrayItems);
+                        arrayItems.forEach((docItem) => {
+                            let logo = "";
+                            if (docItem.data().logo != null) {
+                                logo = `<img src="${docItem.data().logo}" class="rounded" style="max-width: 100px; max-height: 100px;" alt="${docItem.data().title}">`;
+                            }
+                            document.getElementById("listItems").innerHTML += `<tr>
+                                                                                <td>${logo}</td>
+                                                                                <td>${docItem.data().aplicacion}</td>
+                                                                                <td>${docItem.data().usuario}</td>
+                                                                                <td id="password-${docItem.id}" data-password="${docItem.data().contrasenya}">*********</td>
+                                                                                <td>
+                                                                                    <button type="button" class="btn btn-danger float-right" onclick="eliminar('${docItem.id}', '${docItem.data().logo}')">Eliminar</button>
+                                                                                    <button type="button" class="btn btn-primary mr-2 float-right" onclick="editItem('${docItem.id}')">Editar</button>
+                                                                                    <button type="button" class="btn btn-secondary mr-2 float-right" onclick="togglePasswordVisibility('${docItem.id}')">Mostrar/Ocultar</button>
+                                                                                    <button type="button" class="btn btn-secondary mr-2 float-right" onclick="copyPassword('${docItem.id}')">Copiar</button>
+                                                                                </td>
+                                                                            </tr>`;
+                        });
+                    })
+                    .catch((error) => {
+                        console.error("Error al obtener elementos de 'usuaris':", error);
+                        showAlert("Error al mostrar els elements", "alert-danger");
+                    });
+            } else {
+                console.log("El usuario no tiene un documento correspondiente en 'grups'");
+                // Puedes mostrar un mensaje o manejar la situación de otra manera según sea necesario
+            }
         })
         .catch((error) => {
-            console.error("Error al cargar elementos:", error);
+            console.error("Error al obtener el documento de 'grups' por ID:", error);
             showAlert("Error al mostrar els elements", "alert-danger");
         });
 }
+
 
 
 
@@ -129,4 +138,13 @@ function updateItem(id, doc) {
         .catch(() => {
             showAlert("Error al intentar actualitzat l'element", "alert-danger");
         });
+}
+function generatePassword(length = 12) {
+    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+";
+    let password = "";
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        password += charset[randomIndex];
+    }
+    return password;
 }

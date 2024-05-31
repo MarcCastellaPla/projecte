@@ -226,11 +226,21 @@
 									document.getElementById("loginForm").style.display = "block";
 			
 									// Crear el documento con el email como ID y subirlo a la colección 'grups'
+									let email = document.getElementById("signupEmail").value;
 									let doc = {
-										email: email,
+									  email: email
 									};
+									console.log(email)
+									
+									grups.doc(email).set(doc)
+									  .then(() => {
+										console.log("Documento subido con éxito con ID personalizado:", email);
+									  })
+									  .catch((error) => {
+										console.error("Error al subir el documento:", error);
+									  });
+									
 									console.log("He creat el document!!")
-									const grups = db.collection("grups").doc(email);
 									console.log("He pujat el document!!")
 									add(grups, doc)
 										.then(() => {
@@ -271,7 +281,7 @@
 				let contrasenya = document.getElementById("contrasenya").value;
 				let logo = document.getElementById("logo").files[0];
 				let email = document.getElementById("loginEmail").value;
-				let reference = firebase.firestore().collection("grups").doc("ZlsSAJgzqh15T3jzOmXh");
+				let reference = firebase.firestore().collection("grups").doc(email);
 				let doc = {
 					aplicacion: aplicacion,
 					usuario: usuario,
