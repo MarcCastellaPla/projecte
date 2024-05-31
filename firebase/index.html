@@ -88,6 +88,12 @@
 						<div class="col-8">
 							<input type="password" class="form-control" id="contrasenya">
 						</div>
+						<div class="form-group row">
+    <div class="offset-4 col-8">
+        <!-- Aquí colocamos el botón de generar contraseña -->
+        <button type="button" id="generatePasswordButton" class="btn btn-primary">Generar Contraseña</button>
+    </div>
+</div>
 					</div>
 					<div class="form-group row">
 						<label for="logo" class="col-4 col-form-label">Logo:</label>
@@ -251,6 +257,12 @@
 		imatgeModificada = true;
 	});
 	
+		// Llamada a la función cuando se hace clic en el botón de generar contraseña
+	document.getElementById("generatePasswordButton").addEventListener("click", function () {
+    	const generatedPassword = generatePassword();
+    	document.getElementById("contrasenya").value = generatedPassword;
+	});
+
 </script>
 
 </html>

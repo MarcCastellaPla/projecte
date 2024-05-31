@@ -131,3 +131,13 @@ function updateItem(id, doc) {
             showAlert("Error al intentar actualitzat l'element", "alert-danger");
         });
 }
+
+function generatePassword(length = 12) {
+    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+";
+    let password = "";
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        password += charset[randomIndex];
+    }
+    return password;
+}
