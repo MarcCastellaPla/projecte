@@ -1,4 +1,3 @@
-const contrasenyes = db.collection("contrasenyes");
 const usuaris = db.collection("usuaris");
 
 function addUsuari(doc) {

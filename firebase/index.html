@@ -118,8 +118,9 @@
 		<script src="js/storage.js"></script>
 		<script src="js/usuaris.js"></script>
 		<script>
+			const grups = db.collection("grups");
 			let imatgeModificada = false;
-		
+			console.log("Prova: ")
 			function eliminar(itemId, imageUrl) {
 				deleteFile(imageUrl)
 					.then(() => {
@@ -141,25 +142,42 @@
 			document.getElementById("login").addEventListener("click", function () {
 				let email = document.getElementById("loginEmail").value;
 				let password = document.getElementById("loginPassword").value;
-		
+			
 				console.log("Botón de inicio de sesión presionado");
 				console.log("Email:", email);
-		
+			
 				auth.signInWithEmailAndPassword(email, password)
 					.then(function (userCredential) {
 						console.log("Usuario autenticado correctamente");
 						showAlert("Usuari autenticat", "alert-success");
-		
+			
 						document.getElementById("loginForm").style.display = "none";
 						document.getElementById("itemsForm").style.display = "block";
 						document.getElementById("listItems").style.display = "table";
-		
+			
 						// Pasar el correo electrónico a la función loadItems
 						console.log("Abans del let")
 						let userEmail = email; // Obtener el valor del correo electrónico proporcionado por el usuario
 						console.log("Despres del let")
 						console.log("Cargando elementos para el usuario:", userEmail);
 						loadItems(userEmail);
+			
+						// Aquí puedes introducir el código para buscar el documento
+						db.collection("grups").get()
+							.then((querySnapshot) => {
+								querySnapshot.forEach((doc) => {
+									if (doc.data().email === email) {
+										let docId = doc.id;
+										console.log("ID del documento encontrado:", docId);
+										// Aquí puedes manejar el documento encontrado
+									}
+								});
+							})
+							.catch((error) => {
+								console.error("Error al obtener documentos:", error);
+								// Maneja el error aquí
+							});
+			
 					})
 					.catch(function (error) {
 						let errorMessage;
@@ -183,6 +201,7 @@
 						showAlert(errorMessage, "alert-danger");
 					});
 			});
+			
 		
 			// Agregamos más console.log() en otras partes del código para depurar
 			document.getElementById("newUser").addEventListener("click", function () {
@@ -196,17 +215,32 @@
 				let email = document.getElementById("signupEmail").value;
 				let password = document.getElementById("signupPassword").value;
 				let passwordConfirm = document.getElementById("signupPasswordConfirm").value;
-		
+			
 				if (email.length > 0 && email.indexOf("@") > 1) {
 					if (password.length > 0) {
-						if (password == passwordConfirm) {
+						if (password === passwordConfirm) {
 							auth.createUserWithEmailAndPassword(email, password)
 								.then(function () {
 									console.log("Usuario creado correctamente");
 									showAlert("Usuari creat correctament", "alert-success");
-		
 									document.getElementById("loginForm").style.display = "block";
-									document.getElementById("signupForm").style.display = "none";
+			
+									// Crear el documento con el email como ID y subirlo a la colección 'grups'
+									let doc = {
+										email: email,
+									};
+									console.log("He creat el document!!")
+									const grups = db.collection("grups").doc(email);
+									console.log("He pujat el document!!")
+									add(grups, doc)
+										.then(() => {
+											console.log("Documento subido a la colección 'grups' con ID:", email);
+											showAlert("Document pujat a la col·lecció 'grups'", "alert-success");
+										})
+										.catch((error) => {
+											console.log("Error al subir el documento a 'grups':", error);
+											showAlert("Error al pujar el document a 'grups'", "alert-danger");
+										});
 								})
 								.catch(function (error) {
 									console.log("Error al crear usuario:", error);
@@ -225,6 +259,9 @@
 					showAlert("Email incorrecte", "alert-danger");
 				}
 			});
+			
+			
+			
 		
 			document.getElementById("save").addEventListener("click", function () {
 				console.log("Botón de guardar presionado");
