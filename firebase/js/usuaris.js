@@ -2,6 +2,8 @@ const contrasenyes = db.collection("contrasenyes");
 const usuaris = db.collection("usuaris");
 
 function addUsuari(doc) {
+    let web = document.getElementById("web").value; // Aquí se obtiene el valor del campo de la web
+    doc.web = web; // Se añade la propiedad "web" al objeto doc
     add(usuaris, doc)
         .then(() => {
             // loadItems();
@@ -44,49 +46,47 @@ function editItem(id) {
 }
 
 function loadItems() {
-    
     selectAll(usuaris)
-    
-    // selectAll(items, "title")
-    // selectWhere(items, "title", "==", "Firma")
-    // selectLike(items, "title", "F")
         .then((arrayItems) => {
             document.getElementById("listItems").innerHTML = `<tr>
-																<th>Logo</th>
-																<th>Aplicació</th>
-																<th>Usuario</th>
-																<th>Contraseña</th>
-															</tr>`;
+                                                                <th>Logo</th>
+                                                                <th>Aplicació</th>
+                                                                <th>Usuario</th>
+                                                                <th>Contraseña</th>
+                                                                <th>Web</th>
+                                                            </tr>`;
             arrayItems.forEach((docItem) => {
                 let logo = "";
                 if (docItem.data().logo != null) {
-                    logo = `<img src="${docItem.data().logo}" class="rounded" style="max-width: 100px; max-height: 100px;" "alt="${docItem.data().title}">`;
+                    logo = `<img src="${docItem.data().logo}" class="rounded" style="max-width: 100px; max-height: 100px;" alt="${docItem.data().title}">`;
                 }
-                selectAll(usuaris)
-                    .then((docCategory) => {
-                        document.getElementById("listItems").innerHTML += `<tr>
-                                                                    <td>${logo}</td>
-                                                                    <td>${docItem.data().aplicacion}</td>
-                                                                    <td>${docItem.data().usuario}</td>
-                                                                    <td id="password-${docItem.id}" data-password="${docItem.data().contrasenya}">*********</td>
-                                                                    <td>
-                                                                        <button type="button" class="btn btn-danger float-right" onclick="eliminar('${docItem.id}', '${docItem.data().logo}')">Eliminar</button>
-                                                                        <button type="button" class="btn btn-primary mr-2 float-right" onclick="editItem('${docItem.id}')">Editar</button>
-                                                                        <button type="button" class="btn btn-secondary mr-2 float-right" onclick="togglePasswordVisibility('${docItem.id}', this)">
-                                                                        <img src="../Ver.png" alt="Mostrar/Ocultar" style="width: 20px; height: 20px;"></button>                                                                        <button type="button" class="btn btn-secondary mr-2 float-right" onclick="copyPassword('${docItem.id}')">
-                                                                        <img src="../Copiar.png" alt="Copiar" style="width: 20px; height: 20px;"></button>
-                                                                    </td>
-                                                                </tr>`;
-                    })
-                    .catch(() => {
-                        showAlert("Error al mostrar els elements", "alert-danger");
-                    });
+                let webLink = docItem.data().web ? `<a href="${docItem.data().web}" target="_blank">Link</a>` : '';
+                let row = `<tr>
+                                <td>${logo}</td>
+                                <td>${docItem.data().aplicacion}</td>
+                                <td>${docItem.data().usuario}</td>
+                                <td id="password-${docItem.id}" data-password="${docItem.data().contrasenya}">*********</td>
+                                <td>${webLink}</td>
+                                <td>
+                                    <button type="button" class="btn btn-danger float-right" onclick="eliminar('${docItem.id}', '${docItem.data().logo}')">Eliminar</button>
+                                    <button type="button" class="btn btn-primary mr-2 float-right" onclick="editItem('${docItem.id}')">Editar</button>
+                                    <button type="button" class="btn btn-secondary mr-2 float-right" onclick="togglePasswordVisibility('${docItem.id}', this)">
+                                        <img src="../Ver.png" alt="Mostrar/Ocultar" style="width: 20px; height: 20px;">
+                                    </button>                                                                        
+                                    <button type="button" class="btn btn-secondary mr-2 float-right" onclick="copyPassword('${docItem.id}')">
+                                        <img src="../Copiar.png" alt="Copiar" style="width: 20px; height: 20px;">
+                                    </button>
+                                </td>
+                            </tr>`;
+                document.getElementById("listItems").innerHTML += row;
             });
         })
         .catch(() => {
             showAlert("Error al mostrar els elements", "alert-danger");
         });
 }
+
+
 function togglePasswordVisibility(id, button) {
     const passwordField = document.getElementById(`password-${id}`);
     if (passwordField.textContent === '*********') {
