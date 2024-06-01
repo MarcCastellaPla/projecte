@@ -269,18 +269,18 @@
                 });
         });
 
-        document.getElementById("logo").addEventListener("change", function () {
-            imatgeModificada = true;
-            if (this.files && this.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    var thumbnail = document.getElementById("thumbnail");
-                    thumbnail.src = e.target.result;
-                    thumbnail.style.visibility = "visible";
-                }
-                reader.readAsDataURL(this.files[0]);
-            }
-        });
+        // document.getElementById("logo").addEventListener("change", function () {
+        //     imatgeModificada = true;
+        //     if (this.files && this.files[0]) {
+        //         var reader = new FileReader();
+        //         reader.onload = function (e) {
+        //             var thumbnail = document.getElementById("thumbnail");
+        //             thumbnail.src = e.target.result;
+        //             thumbnail.style.visibility = "visible";
+        //         }
+        //         reader.readAsDataURL(this.files[0]);
+        //     }
+        // });
 
 		document.getElementById("save").addEventListener("click", function () {
 				console.log("Botón de guardar presionado");
@@ -324,8 +324,11 @@
                         uploadFile(logo)
 						console.log("Despres de uploadfile!!")
                             .then((imageUrl) => {
+								console.log("Abans de doc.logo!!")
                                 doc.logo = imageUrl;
+								console.log("Despres de doc.logo!!")
                                 updateItem(id, doc);
+								console.log("Despres de updateItem!!")
                             })
                             .catch(() => {
                                 showAlert("Error al intentar actualitzat l'element", "alert-danger");
