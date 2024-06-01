@@ -283,66 +283,54 @@
         // });
 
 		document.getElementById("save").addEventListener("click", function () {
-				console.log("Botón de guardar presionado");
-				let id = document.getElementById("elementId").value;
-				let aplicacion = document.getElementById("aplicacion").value;
-				let usuario = document.getElementById("usuario").value;
-				let contrasenya = document.getElementById("contrasenya").value;
-				let logo = document.getElementById("logo").files[0];
-				let email = document.getElementById("loginEmail").value;
-				let reference = firebase.firestore().collection("grups").doc(email);
-				let web = document.getElementById("web").value;
-				let doc = {
-					aplicacion: aplicacion,
-					usuario: usuario,
-					contrasenya: contrasenya,
-					email: email,
-					web: web,
-					reference: reference
-				};
-		
-				if (id == "") {
-					uploadFile(logo)
-						.then((imageUrl) => {
-							doc.logo = imageUrl;
-							console.log("Abans de add usuari")
-							addUsuari(doc);
-							console.log("Despres de add usuari")
-						})
-						.catch(() => {
-							console.log("Error al guardar elemento");
-							showAlert("Error al intentar guardar l'element", "alert-danger");
-						});
-					} else {
-						if (imatgeModificada) {
-                let currentImageUrl = document.getElementById("thumbnail").src;
-				console.log("currentImageUrl: ")
+		let id = document.getElementById("elementId").value;
+		let aplicacion= document.getElementById("aplicacion").value;
+		let usuario = document.getElementById("usuario").value;
+		let contrasenya = document.getElementById("contrasenya").value;
+		let logo = document.getElementById("logo").files[0];
+		let email = document.getElementById("loginEmail").value;
+		let doc = {
+			aplicacion: aplicacion,
+			usuario: usuario,
+			contrasenya: contrasenya,
+			email: email
+		};
+
+		if (id == "") {
+			uploadFile(logo)
+				.then((imageUrl) => {
+					doc.logo = imageUrl;
+					addUsuari(doc);
+				})
+				.catch(() => {
+					showAlert("Error al intentar guardar l'element", "alert-danger");
+				});
+		} else {
+			if (imatgeModificada) {
+				let currentImageUrl = document.getElementById("thumbnail").src;
+				console.log("CurrentImageURL: ")
 				console.log(currentImageUrl)
-                deleteFile(currentImageUrl)
-                    .then(() => {
-						console.log("Abans de uploadfile!!")
-                        uploadFile(logo)
-						console.log("Despres de uploadfile!!")
-                            .then((imageUrl) => {
-								console.log("Abans de doc.logo!!")
-                                doc.logo = imageUrl;
-								console.log("Despres de doc.logo!!")
-                                updateItem(id, doc);
-								console.log("Despres de updateItem!!")
-                            })
-                            .catch(() => {
-                                showAlert("Error al intentar actualitzat l'element", "alert-danger");
-                            });
-                    })
-                    .catch(() => {
-                        showAlert("Error al intentar actualitzat l'element", "alert-danger");
-                    });
-            } else {
-                updateItem(id, doc);
-            }
-        }
-        imatgeModificada = false;
-    });
+				deleteFile(currentImageUrl)
+					.then(() => {
+						uploadFile(logo)
+							.then((imageUrl) => {
+								doc.logo = imageUrl;
+								updateItem(id, doc);
+							})
+							.catch(() => {
+								showAlert("Error al intentar actualitzat l'element", "alert-danger");
+							});
+					})
+					.catch(() => {
+						showAlert("Error al intentar actualitzat l'element", "alert-danger");
+					});
+			} else {
+				updateItem(id, doc);
+			}
+		}
+		imatgeModificada = false;
+	});
+
 
     document.getElementById("logo").addEventListener("change", function () {
         imatgeModificada = true;
