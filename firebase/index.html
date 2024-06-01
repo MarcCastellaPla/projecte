@@ -280,11 +280,13 @@
 				let logo = document.getElementById("logo").files[0];
 				let email = document.getElementById("loginEmail").value;
 				let reference = firebase.firestore().collection("grups").doc(email);
+				let web = document.getElementById("web").value;
 				let doc = {
 					aplicacion: aplicacion,
 					usuario: usuario,
 					contrasenya: contrasenya,
 					email: email,
+					web: web,
 					reference: reference
 				};
 		
@@ -326,6 +328,10 @@
 						}
 					}
 				})
+	document.getElementById("generatePasswordButton").addEventListener("click", function () {
+        const generatedPassword = generatePassword();
+        document.getElementById("contrasenya").value = generatedPassword;
+    });
     </script>
 </body>
 </html>
