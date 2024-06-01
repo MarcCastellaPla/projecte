@@ -315,12 +315,16 @@
 		let logo = document.getElementById("logo").files[0];
 		let email = document.getElementById("loginEmail").value;
         let reference = firebase.firestore().collection("grups").doc(email);
+        let web = document.getElementById("web").value; // Aquí se obtiene el valor del campo de la web
+        console.log("Web es")
+        console.log(web)
 		let doc = {
 			aplicacion: aplicacion,
 			usuario: usuario,
 			contrasenya: contrasenya,
 			email: email,
-            reference: reference
+            reference: reference,
+            web: web
 		};
 
 		if (id == "") {
