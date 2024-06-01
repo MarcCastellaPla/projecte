@@ -269,18 +269,18 @@
                 });
         });
 
-        // document.getElementById("logo").addEventListener("change", function () {
-        //     imatgeModificada = true;
-        //     if (this.files && this.files[0]) {
-        //         var reader = new FileReader();
-        //         reader.onload = function (e) {
-        //             var thumbnail = document.getElementById("thumbnail");
-        //             thumbnail.src = e.target.result;
-        //             thumbnail.style.visibility = "visible";
-        //         }
-        //         reader.readAsDataURL(this.files[0]);
-        //     }
-        // });
+        document.getElementById("logo").addEventListener("change", function () {
+            imatgeModificada = true;
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var thumbnail = document.getElementById("thumbnail");
+                    thumbnail.src = e.target.result;
+                    thumbnail.style.visibility = "visible";
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
 
 		document.getElementById("save").addEventListener("click", function () {
 		let id = document.getElementById("elementId").value;
@@ -299,7 +299,9 @@
 		if (id == "") {
 			uploadFile(logo)
 				.then((imageUrl) => {
+                    console.log("Abans del doclogo")
 					doc.logo = imageUrl;
+                    console.log("despres del doclogo")
 					addUsuari(doc);
 				})
 				.catch(() => {
