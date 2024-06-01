@@ -315,35 +315,35 @@
 						});
 					} else {
 						if (imatgeModificada) {
-							let currentImageUrl = document.getElementById("thumbnail").src;
-							console.log("Abans del delete file!!")
-							deleteFile(currentImageUrl)
-								.then(() => {
-									console.log("Abans de UploadFile")
-									uploadFile(logo)
-									console.log("Despres de UploadFIle")
-										.then((imageUrl) => {
-											doc.logo = imageUrl;
-											updateItem(id, doc);
-										})
-										.catch(() => {
-											console.log("HOLA soc el primer catch!!!")
-											console.log("Error al actualizar elemento");
-											showAlert("Error al intentar actualitzat l'element", "alert-danger");
-										});
-								})
-								.catch(() => {
-									console.log("HOLA soc el segon catch!!!")
-									console.log("Error al actualizar elemento");
-									showAlert("Error al intentar actualizar el elemento");
-								});
-							document.getElementById("logo").addEventListener("change", function () {
-								console.log("Cambio de imagen detectado");
-								imatgeModificada = true;
-							});
-						}
-					}
-				})
+                let currentImageUrl = document.getElementById("thumbnail").src;
+				console.log("currentImageUrl: ")
+				console.log(currentImageUrl)
+                deleteFile(currentImageUrl)
+                    .then(() => {
+						console.log("Abans de uploadfile!!")
+                        uploadFile(logo)
+						console.log("Despres de uploadfile!!")
+                            .then((imageUrl) => {
+                                doc.logo = imageUrl;
+                                updateItem(id, doc);
+                            })
+                            .catch(() => {
+                                showAlert("Error al intentar actualitzat l'element", "alert-danger");
+                            });
+                    })
+                    .catch(() => {
+                        showAlert("Error al intentar actualitzat l'element", "alert-danger");
+                    });
+            } else {
+                updateItem(id, doc);
+            }
+        }
+        imatgeModificada = false;
+    });
+
+    document.getElementById("logo").addEventListener("change", function () {
+        imatgeModificada = true;
+    });
 	document.getElementById("generatePasswordButton").addEventListener("click", function () {
         const generatedPassword = generatePassword();
         document.getElementById("contrasenya").value = generatedPassword;
