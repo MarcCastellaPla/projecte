@@ -1,0 +1,16 @@
+body {
+    background-color: #4d4dff;
+}
+.lletraBlanca {
+    color: #ffffff;
+}
+.fonsBlau {
+    background-color: #3655b3;
+    color: white;
+}
+label {
+    color: white;
+}
+.oculta {
+    display: none;
+}
