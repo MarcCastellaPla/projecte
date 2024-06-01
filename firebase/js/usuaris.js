@@ -2,6 +2,7 @@ const usuaris = db.collection("usuaris");
 const grups = db.collection("grups"); // Añadido de la versión 2
 
 function addUsuari(doc) {
+    console.log("Hola!! Soc a addusuari")
     let web = document.getElementById("web").value; // Aquí se obtiene el valor del campo de la web
     doc.web = web; // Se añade la propiedad "web" al objeto doc
     add(usuaris, doc)
