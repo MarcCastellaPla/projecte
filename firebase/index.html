@@ -183,7 +183,7 @@
 
                     // Pasar el correo electrónico a la función loadItems
                     console.log("Abans del let")
-                    let userEmail = email; // Obtener el valor del correo electrónico proporcionado por el usuario
+                    let userEmail = document.getElementById("loginEmail").value;
                     console.log("Despres del let")
                     console.log("Cargando elementos para el usuario:", userEmail);
                     loadItems(userEmail);
@@ -242,13 +242,13 @@
                 return;
             }
 
+            console.log(email)
+            console.log(password)
             auth.createUserWithEmailAndPassword(email, password)
                 .then(function (userCredential) {
                     console.log("Nou usuari creat:", userCredential.user.uid);
-
                     db.collection("grups").add({
                         email: email,
-                        userId: userCredential.user.uid
                     })
                         .then(function (docRef) {
                             console.log("Document written with ID: ", docRef.id);
@@ -269,18 +269,18 @@
                 });
         });
 
-        document.getElementById("logo").addEventListener("change", function () {
-            imatgeModificada = true;
-            if (this.files && this.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    var thumbnail = document.getElementById("thumbnail");
-                    thumbnail.src = e.target.result;
-                    thumbnail.style.visibility = "visible";
-                }
-                reader.readAsDataURL(this.files[0]);
-            }
-        });
+        // document.getElementById("logo").addEventListener("change", function () {
+        //     imatgeModificada = true;
+        //     if (this.files && this.files[0]) {
+        //         var reader = new FileReader();
+        //         reader.onload = function (e) {
+        //             var thumbnail = document.getElementById("thumbnail");
+        //             thumbnail.src = e.target.result;
+        //             thumbnail.style.visibility = "visible";
+        //         }
+        //         reader.readAsDataURL(this.files[0]);
+        //     }
+        // });
 
 		document.getElementById("save").addEventListener("click", function () {
 		let id = document.getElementById("elementId").value;
@@ -289,11 +289,13 @@
 		let contrasenya = document.getElementById("contrasenya").value;
 		let logo = document.getElementById("logo").files[0];
 		let email = document.getElementById("loginEmail").value;
+        let reference = firebase.firestore().collection("grups").doc(email);
 		let doc = {
 			aplicacion: aplicacion,
 			usuario: usuario,
 			contrasenya: contrasenya,
-			email: email
+			email: email,
+            reference: reference
 		};
 
 		if (id == "") {

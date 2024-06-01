@@ -55,9 +55,14 @@ function loadItems(userEmail) {
                                                     </tr>`;
 
     // Obtener el documento de "grups" correspondiente al correo electrónico del usuario
-    selectById(grups, userEmail)
+    console.log("Abans de selectbyid grups")
+    let emailusuari = document.getElementById("loginEmail").value;
+    console.log(grups)
+    console.log(emailusuari)
+    selectById(grups, emailusuari)
         .then((doc) => {
             if (doc.exists) {
+                console.log("Despres de selectbyid grups")
                 // Filtrar documentos en "usuaris" que tienen una referencia al documento de "grups"
                 selectWhere(usuaris, "reference", "==", doc.ref)
                     .then((arrayItems) => {
