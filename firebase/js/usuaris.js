@@ -1,5 +1,4 @@
 const usuaris = db.collection("usuaris");
-const contrasenyes = db.collection("contrasenyes"); // Añadido de la versión 1
 const grups = db.collection("grups"); // Añadido de la versión 2
 
 function addUsuari(doc) {
