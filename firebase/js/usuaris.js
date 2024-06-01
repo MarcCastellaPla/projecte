@@ -75,18 +75,27 @@ function loadItems(userEmail) {
                             if (docItem.data().logo != null) {
                                 logo = `<img src="${docItem.data().logo}" class="rounded" style="max-width: 100px; max-height: 100px;" alt="${docItem.data().title}">`;
                             }
-                            // let webLink = docItem.data().web;
-                            // if (!webLink.startsWith("https://")) {
-                            //     webLink = "https://" + webLink;
-                            // }
-                                                    
-                            console.log(webLink)
+                            let webLink;
+                            let link = "Link"; // Declarar link fuera del bloque if
+                            if (docItem.data().web !== undefined) {
+                                link = "Link";
+                                webLink = docItem.data().web;
+                                if (!webLink.startsWith("https://")) {
+                                    webLink = "https://" + webLink;
+                                }
+                            } else {
+                                webLink = ""; // o cualquier otro valor predeterminado que desees
+                                link = "";
+                            }
+                            
+                            console.log("Valor de webLink después de la condición:", webLink);                
+                            // console.log(webLink)
                             let row = `<tr>
                                             <td>${logo}</td>
                                             <td>${docItem.data().aplicacion}</td>
                                             <td>${docItem.data().usuario}</td>
                                             <td id="password-${docItem.id}" data-password="${docItem.data().contrasenya}">*********</td>
-                                            <td><a href="${webLink}" target="_blank">Link</a></td>
+                                            <td><a href="${webLink}" target="_blank">${link}</a></td>
                                             <td>
                                                 <button type="button" class="btn btn-danger float-right" onclick="eliminar('${docItem.id}', '${docItem.data().logo}')">Eliminar</button>
                                                 <button type="button" class="btn btn-primary mr-2 float-right" onclick="editItem('${docItem.id}')">Editar</button>
