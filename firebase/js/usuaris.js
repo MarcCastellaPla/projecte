@@ -16,6 +16,7 @@ function addUsuari(doc) {
         .catch(() => {
             showAlert("Error al intentar guardar l'element", "alert-danger");
         });
+        loadItems();
 }
 
 function deleteItem(id) {

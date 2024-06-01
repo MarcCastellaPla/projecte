@@ -233,41 +233,66 @@
         });
 
         document.getElementById("signup").addEventListener("click", function () {
-            let email = document.getElementById("signupEmail").value;
-            let password = document.getElementById("signupPassword").value;
-            let passwordConfirm = document.getElementById("signupPasswordConfirm").value;
-
-            if (password !== passwordConfirm) {
-                showAlert("Les contrasenyes no coincideixen.", "alert-danger");
-                return;
-            }
-
-            console.log(email)
-            console.log(password)
-            auth.createUserWithEmailAndPassword(email, password)
-                .then(function (userCredential) {
-                    console.log("Nou usuari creat:", userCredential.user.uid);
-                    db.collection("grups").add({
-                        email: email,
-                    })
-                        .then(function (docRef) {
-                            console.log("Document written with ID: ", docRef.id);
-                            showAlert("Nou usuari creat", "alert-success");
-
-                            document.getElementById("signupForm").style.display = "none";
-                            document.getElementById("loginForm").style.display = "block";
-                        })
-                        .catch(function (error) {
-                            console.error("Error afegint el document: ", error);
-                            showAlert("Error afegint el document: " + error.message, "alert-danger");
-                        });
-
-                })
-                .catch(function (error) {
-                    console.error("Error creant l'usuari:", error);
-                    showAlert("Error creant l'usuari: " + error.message, "alert-danger");
-                });
-        });
+				console.log("Botón de registro presionado");
+				let email = document.getElementById("signupEmail").value;
+				let password = document.getElementById("signupPassword").value;
+				let passwordConfirm = document.getElementById("signupPasswordConfirm").value;
+			
+				if (email.length > 0 && email.indexOf("@") > 1) {
+					if (password.length > 0) {
+						if (password === passwordConfirm) {
+							auth.createUserWithEmailAndPassword(email, password)
+								.then(function () {
+									console.log("Usuario creado correctamente");
+									showAlert("Usuari creat correctament", "alert-success");
+									document.getElementById("loginForm").style.display = "block";
+			
+									// Crear el documento con el email como ID y subirlo a la colección 'grups'
+									let email = document.getElementById("signupEmail").value;
+									let doc = {
+									  email: email
+									};
+									console.log(email)
+									
+									grups.doc(email).set(doc)
+									  .then(() => {
+										console.log("Documento subido con éxito con ID personalizado:", email);
+                                        document.getElementById("signupForm").style.display = "none";
+                                        document.getElementById("loginForm").style.display = "block";
+									  })
+									  .catch((error) => {
+										console.error("Error al subir el documento:", error);
+									  });
+									
+									console.log("He creat el document!!")
+									console.log("He pujat el document!!")
+									add(grups, doc)
+										.then(() => {
+											console.log("Documento subido a la colección 'grups' con ID:", email);
+											showAlert("Document pujat a la col·lecció 'grups'", "alert-success");
+										})
+										.catch((error) => {
+											console.log("Error al subir el documento a 'grups':", error);
+											showAlert("Error al pujar el document a 'grups'", "alert-danger");
+										});
+								})
+								.catch(function (error) {
+									console.log("Error al crear usuario:", error);
+									showAlert("Error al intentar crear l'usuari", "alert-danger");
+								});
+						} else {
+							console.log("Las contraseñas no coinciden");
+							showAlert("Les contrasenyes no coincideixen", "alert-danger");
+						}
+					} else {
+						console.log("La contraseña es obligatoria");
+						showAlert("La contrasenya és obligatòria", "alert-danger");
+					}
+				} else {
+					console.log("Email incorrecto");
+					showAlert("Email incorrecte", "alert-danger");
+				}
+			});
 
         // document.getElementById("logo").addEventListener("change", function () {
         //     imatgeModificada = true;
