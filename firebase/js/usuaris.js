@@ -4,6 +4,8 @@ const grups = db.collection("grups"); // Añadido de la versión 2
 function addUsuari(doc) {
     add(usuaris, doc)
         .then(() => {
+            let web = document.getElementById("web").value; // Aquí se obtiene el valor del campo de la web
+            doc.web = web; // Se añade la propiedad "web" al objeto doc
             // loadItems();
 
             document.getElementById("aplicacion").value = "";
