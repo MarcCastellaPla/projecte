@@ -1,10 +1,12 @@
 const usuaris = db.collection("usuaris");
+const contrasenyes = db.collection("contrasenyes"); // Añadido de la versión 1
+const grups = db.collection("grups"); // Añadido de la versión 2
 
 function addUsuari(doc) {
+    let web = document.getElementById("web").value; // Aquí se obtiene el valor del campo de la web
+    doc.web = web; // Se añade la propiedad "web" al objeto doc
     add(usuaris, doc)
         .then(() => {
-            // loadItems();
-
             document.getElementById("aplicacion").value = "";
             document.getElementById("usuario").value = "";
             document.getElementById("contrasenya").value = "";
@@ -50,6 +52,7 @@ function loadItems(userEmail) {
                                                         <th>Aplicació</th>
                                                         <th>Usuario</th>
                                                         <th>Contraseña</th>
+                                                        <th>Web</th>
                                                     </tr>`;
 
     // Obtener el documento de "grups" correspondiente al correo electrónico del usuario
@@ -65,18 +68,25 @@ function loadItems(userEmail) {
                             if (docItem.data().logo != null) {
                                 logo = `<img src="${docItem.data().logo}" class="rounded" style="max-width: 100px; max-height: 100px;" alt="${docItem.data().title}">`;
                             }
-                            document.getElementById("listItems").innerHTML += `<tr>
-                                                                                <td>${logo}</td>
-                                                                                <td>${docItem.data().aplicacion}</td>
-                                                                                <td>${docItem.data().usuario}</td>
-                                                                                <td id="password-${docItem.id}" data-password="${docItem.data().contrasenya}">*********</td>
-                                                                                <td>
-                                                                                    <button type="button" class="btn btn-danger float-right" onclick="eliminar('${docItem.id}', '${docItem.data().logo}')">Eliminar</button>
-                                                                                    <button type="button" class="btn btn-primary mr-2 float-right" onclick="editItem('${docItem.id}')">Editar</button>
-                                                                                    <button type="button" class="btn btn-secondary mr-2 float-right" onclick="togglePasswordVisibility('${docItem.id}')">Mostrar/Ocultar</button>
-                                                                                    <button type="button" class="btn btn-secondary mr-2 float-right" onclick="copyPassword('${docItem.id}')">Copiar</button>
-                                                                                </td>
-                                                                            </tr>`;
+                            let webLink = docItem.data().web ? `<a href="${docItem.data().web}" target="_blank">Link</a>` : '';
+                            let row = `<tr>
+                                            <td>${logo}</td>
+                                            <td>${docItem.data().aplicacion}</td>
+                                            <td>${docItem.data().usuario}</td>
+                                            <td id="password-${docItem.id}" data-password="${docItem.data().contrasenya}">*********</td>
+                                            <td>${webLink}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger float-right" onclick="eliminar('${docItem.id}', '${docItem.data().logo}')">Eliminar</button>
+                                                <button type="button" class="btn btn-primary mr-2 float-right" onclick="editItem('${docItem.id}')">Editar</button>
+                                                <button type="button" class="btn btn-secondary mr-2 float-right" onclick="togglePasswordVisibility('${docItem.id}', this)">
+                                                    <img src="../Ver.png" alt="Mostrar/Ocultar" style="width: 20px; height: 20px;">
+                                                </button>                                                                        
+                                                <button type="button" class="btn btn-secondary mr-2 float-right" onclick="copyPassword('${docItem.id}')">
+                                                    <img src="../Copiar.png" alt="Copiar" style="width: 20px; height: 20px;">
+                                                </button>
+                                            </td>
+                                        </tr>`;
+                            document.getElementById("listItems").innerHTML += row;
                         });
                     })
                     .catch((error) => {
@@ -94,17 +104,16 @@ function loadItems(userEmail) {
         });
 }
 
-
-
-
-
-
-function togglePasswordVisibility(id) {
+function togglePasswordVisibility(id, button) {
     const passwordField = document.getElementById(`password-${id}`);
     if (passwordField.textContent === '*********') {
         passwordField.textContent = passwordField.getAttribute('data-password');
+        // Cambiar la imagen a la imagen de ocultar
+        button.querySelector('img').src = '../Ocultar.png';
     } else {
         passwordField.textContent = '*********';
+        // Cambiar la imagen a la imagen de mostrar
+        button.querySelector('img').src = '../Ver.png';
     }
 }
 
@@ -121,6 +130,7 @@ function copyPassword(id) {
 
     showAlert("Contrasenya copiada al porta-retalls", "alert-success");
 }
+
 function updateItem(id, doc) {
     updateById(usuaris, id, doc)
         .then(() => {
@@ -139,6 +149,7 @@ function updateItem(id, doc) {
             showAlert("Error al intentar actualitzat l'element", "alert-danger");
         });
 }
+
 function generatePassword(length = 12) {
     const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+";
     let password = "";

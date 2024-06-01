@@ -1,394 +1,390 @@
-	<!doctype html>
-	<html>
-	<head>
-		<meta charset="utf-8">
-		<title>Items</title>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
-		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-		<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
-		<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-firestore.js"></script>
-		<link rel="stylesheet" href="css/styles.css">
-	</head>
-	<body>
-		<div class="container p-5">
-			<div class="row">
-				<div class="col-8 offset-2" id="loginForm">
-					<form>
-						<div class="form-group row">
-							<label for="title" class="col-4 col-form-label">Correu electrònic:</label>
-							<div class="col-8">
-								<input type="email" class="form-control" id="loginEmail">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="content" class="col-4 col-form-label">Contrasenya:</label>
-							<div class="col-8">
-								<input type="password" class="form-control" id="loginPassword" value="Admin1234">
-							</div>
-						</div>
-						<div class="form-group row">
-							<div class="offset-4 col-8">
-								<button type="button" id="newUser" class="btn btn-outline-primary float-right fonsBlau">Registrar un nou usuari</button>
-								<button type="button" id="login" class="btn btn-default float-right mr-3">Entrar</button>
-							</div>
-						</div>
-					</form>
-				</div>
+<!doctype html>
+<html>
 
-				<div class="col-8 offset-2" id="signupForm" style="display: none;">
-					<form>
-						<div class="form-group row">
-							<label for="title" class="col-4 col-form-label">Correu electrònic:</label>
-							<div class="col-8">
-								<input type="email" class="form-control" id="signupEmail">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="content" class="col-4 col-form-label">Contrasenya:</label>
-							<div class="col-8">
-								<input type="password" class="form-control" id="signupPassword">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="content" class="col-4 col-form-label">Confirmar contrasenya:</label>
-							<div class="col-8">
-								<input type="password" class="form-control" id="signupPasswordConfirm">
-							</div>
-						</div>
-						<div class="form-group row">
-							<div class="offset-4 col-8">
-								<button type="button" id="signup" class="btn btn-default float-right">Enviar</button>
-							</div>
-						</div>
-					</form>
-				</div>
+<head>
+	<meta charset="utf-8">
+	<title>Items</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-firestore.js"></script>
+	<link rel="stylesheet" href="css/styles.css">
+</head>
 
-				<div class="col-8 offset-2" id="itemsForm" style="display: none;">
-					<form>
-						<div class="form-group row">
-							<label for="aplicacion" class="col-4 col-form-label">Aplicación:</label>
-							<div class="col-8">
-								<input type="text" class="form-control" id="aplicacion">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="usuario" class="col-4 col-form-label">Usuario:</label>
-							<div class="col-8">
-								<input type="text" class="form-control" id="usuario">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="contrasenya" class="col-4 col-form-label">Contraseña:</label>
-							<div class="col-8">
-								<input type="password" class="form-control" id="contrasenya">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="logo" class="col-4 col-form-label">Logo:</label>
-							<div class="col-6 lletraBlanca">
-								<input type="file" class="form-control-file" id="logo">
-							</div>
-							<div class="col-2">
-								<img class="rounded" id="thumbnail" style="max-width: 60px; max-height: 60px; visibility: hidden;" alt="imatge">
-							</div>
-						</div>
-						<div class="form-group row">
-							<div class="offset-4 col-8">
-								<button type="button" id="save" class="btn btn-default float-right">Guardar</button>
-							</div>
-						</div>
-						<input type="hidden" id="elementId">
-					</form>
-				</div>
+<body>
+	<div class="container p-5">
+		<div class="row">
 
-				<div class="col-2">
-					<div id="alert" role="alert"></div>
-				</div>
+			<div class="col-8 offset-2" id="loginForm">
+				<form>
+					<div class="form-group row">
+						<label for="title" class="col-4 col-form-label">Correu electrònic:</label>
+						<div class="col-8">
+							<input type="email" class="form-control" id="loginEmail">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="content" class="col-4 col-form-label">Contrasenya:</label>
+						<div class="col-8">
+							<input type="password" class="form-control" id="loginPassword" value="Admin1234">
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="offset-4 col-8">
+							<button type="button" id="newUser" class="btn btn-outline-primary float-right fonsBlau">Registrar un
+								nou usuari</button>
+							<button type="button" id="login" class="btn btn-default float-right mr-3">Entrar</button>
+						</div>
+					</div>
+				</form>
 			</div>
-			<div class="table-responsive">
-				<table class="table table-hover lletraBlanca" id="listItems" style="display: none;">
-					<!-- Aquí se insertarán los elementos de la lista -->
-				</table>
+
+			<div class="col-8 offset-2" id="signupForm" style="display: none;">
+				<form>
+					<div class="form-group row">
+						<label for="title" class="col-4 col-form-label">Correu electrònic:</label>
+						<div class="col-8">
+							<input type="email" class="form-control" id="signupEmail">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="content" class="col-4 col-form-label">Contrasenya:</label>
+						<div class="col-8">
+							<input type="password" class="form-control" id="signupPassword">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="content" class="col-4 col-form-label">Confirmar contrasenya:</label>
+						<div class="col-8">
+							<input type="password" class="form-control" id="signupPasswordConfirm">
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="offset-4 col-8">
+							<button type="button" id="signup" class="btn btn-default float-right">Enviar</button>
+						</div>
+					</div>
+				</form>
+			</div>
+
+			<div class="col-8 offset-2" id="itemsForm" style="display: none;">
+				<form>
+					<div class="form-group row">
+						<label for="aplicacion" class="col-4 col-form-label">Aplicación:</label>
+						<div class="col-8">
+							<input type="text" class="form-control" id="aplicacion">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="web" class="col-4 col-form-label">Web:</label>
+						<div class="col-8">
+							<input type="url" class="form-control" id="web">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="usuario" class="col-4 col-form-label">Usuario:</label>
+						<div class="col-8">
+							<input type="text" class="form-control" id="usuario">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="contrasenya" class="col-4 col-form-label">Contraseña:</label>
+						<div class="col-8">
+							<input type="password" class="form-control" id="contrasenya">
+							<button type="button" id="generatePasswordButton" class="btn btn-primary">Generar</button>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="logo" class="col-4 col-form-label">Logo:</label>
+						<div class="col-6 lletraBlanca">
+							<input type="file" class="form-control-file" id="logo">
+						</div>
+						<div class="col-2">
+							<img class="rounded" id="thumbnail"
+								style="max-width: 60px; max-height: 60px; visibility: hidden;" alt="imatge">
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="offset-4 col-8">
+							<button type="button" id="save" class="btn btn-default float-right">Guardar</button>
+						</div>
+					</div>
+					<input type="hidden" id="elementId">
+				</form>
+			</div>
+
+			<div class="col-2">
+				<div id="alert" role="alert"></div>
 			</div>
 		</div>
-		<script src="js/config.js"></script>
-		<script src="js/firestore.js"></script>
-		<script src="js/storage.js"></script>
-		<script src="js/usuaris.js"></script>
-		<script>
-			const grups = db.collection("grups");
-			let imatgeModificada = false;
-			console.log("Prova: ")
-			function eliminar(itemId, imageUrl) {
-				deleteFile(imageUrl)
-					.then(() => {
-						deleteItem(itemId);
-					}).catch(() => {
-						showAlert("Error al intentar eliminar la imatge", "alert-danger");
-					});
-			}
-		
-			function showAlert(text, type) {
-				document.getElementById("alert").innerText = text;
-				document.getElementById("alert").className = "alert " + type;
-				document.getElementById("alert").style.display = "block";
-				window.setTimeout(function () {
-					document.getElementById("alert").style.display = "none";
-				}, 2000);
-			}
-		
-			document.getElementById("login").addEventListener("click", function () {
-				let email = document.getElementById("loginEmail").value;
-				let password = document.getElementById("loginPassword").value;
-			
-				console.log("Botón de inicio de sesión presionado");
-				console.log("Email:", email);
-			
-				auth.signInWithEmailAndPassword(email, password)
-					.then(function (userCredential) {
-						console.log("Usuario autenticado correctamente");
-						showAlert("Usuari autenticat", "alert-success");
-			
-						document.getElementById("loginForm").style.display = "none";
-						document.getElementById("itemsForm").style.display = "block";
-						document.getElementById("listItems").style.display = "table";
-			
-						// Pasar el correo electrónico a la función loadItems
-						console.log("Abans del let")
-						let userEmail = email; // Obtener el valor del correo electrónico proporcionado por el usuario
-						console.log("Despres del let")
-						console.log("Cargando elementos para el usuario:", userEmail);
-						loadItems(userEmail);
-			
-						// Aquí puedes introducir el código para buscar el documento
-						db.collection("grups").get()
-							.then((querySnapshot) => {
-								querySnapshot.forEach((doc) => {
-									if (doc.data().email === email) {
-										let docId = doc.id;
-										console.log("ID del documento encontrado:", docId);
-										// Aquí puedes manejar el documento encontrado
-									}
-								});
-							})
-							.catch((error) => {
-								console.error("Error al obtener documentos:", error);
-								// Maneja el error aquí
+		<div class="table-responsive">
+			<table class="table table-hover lletraBlanca" id="listItems" style="display: none;">
+				<!-- Aquí se insertarán los elementos de la lista -->
+			</table>
+		</div>
+	</div>
+	<script src="js/config.js"></script>
+	<script src="js/firestore.js"></script>
+	<script src="js/storage.js"></script>
+	<script src="js/usuaris.js"></script>
+	<script>
+		const grups = db.collection("grups");
+		let imatgeModificada = false;
+		console.log("Prova: ")
+		function eliminar(itemId, imageUrl) {
+			deleteFile(imageUrl)
+				.then(() => {
+					deleteItem(itemId);
+				}).catch(() => {
+					showAlert("Error al intentar eliminar la imatge", "alert-danger");
+				});
+		}
+
+		function showAlert(text, type) {
+			document.getElementById("alert").innerText = text;
+			document.getElementById("alert").className = "alert " + type;
+			document.getElementById("alert").style.display = "block";
+			window.setTimeout(function () {
+				document.getElementById("alert").style.display = "none";
+			}, 2000);
+		}
+
+		document.getElementById("login").addEventListener("click", function () {
+			let email = document.getElementById("loginEmail").value;
+			let password = document.getElementById("loginPassword").value;
+
+			console.log("Botón de inicio de sesión presionado");
+			console.log("Email:", email);
+
+			auth.signInWithEmailAndPassword(email, password)
+				.then(function (userCredential) {
+					console.log("Usuario autenticado correctamente");
+					showAlert("Usuari autenticat", "alert-success");
+
+					document.getElementById("loginForm").style.display = "none";
+					document.getElementById("itemsForm").style.display = "block";
+					document.getElementById("listItems").style.display = "table";
+
+					let userEmail = email;
+					console.log("Cargando elementos para el usuario:", userEmail);
+					loadItems(userEmail);
+
+					db.collection("grups").get()
+						.then((querySnapshot) => {
+							querySnapshot.forEach((doc) => {
+								if (doc.data().email === email) {
+									let docId = doc.id;
+									console.log("ID del documento encontrado:", docId);
+								}
 							});
-			
-					})
-					.catch(function (error) {
-						let errorMessage;
-						switch (error.code) {
-							case 'auth/invalid-email':
-								errorMessage = "L'email no és vàlid.";
-								break;
-							case 'auth/user-disabled':
-								errorMessage = "L'usuari està deshabilitat.";
-								break;
-							case 'auth/user-not-found':
-								errorMessage = "L'usuari no existeix.";
-								break;
-							case 'auth/wrong-password':
-								errorMessage = "La contrasenya no és correcta.";
-								break;
-							default:
-								errorMessage = "Error d’autenticació";
-						}
-						console.log("Error al iniciar sesión:", errorMessage);
-						showAlert(errorMessage, "alert-danger");
-					});
-			});
-			
-		
-			// Agregamos más console.log() en otras partes del código para depurar
-			document.getElementById("newUser").addEventListener("click", function () {
-				console.log("Botón de nuevo usuario presionado");
-				document.getElementById("loginForm").style.display = "none";
-				document.getElementById("signupForm").style.display = "block";
-			});
-		
-			document.getElementById("signup").addEventListener("click", function () {
-				console.log("Botón de registro presionado");
-				let email = document.getElementById("signupEmail").value;
-				let password = document.getElementById("signupPassword").value;
-				let passwordConfirm = document.getElementById("signupPasswordConfirm").value;
-			
-				if (email.length > 0 && email.indexOf("@") > 1) {
-					if (password.length > 0) {
-						if (password === passwordConfirm) {
-							auth.createUserWithEmailAndPassword(email, password)
-								.then(function () {
-									console.log("Usuario creado correctamente");
-									showAlert("Usuari creat correctament", "alert-success");
-									document.getElementById("loginForm").style.display = "block";
-			
-									// Crear el documento con el email como ID y subirlo a la colección 'grups'
-									let email = document.getElementById("signupEmail").value;
-									let doc = {
-									  email: email
-									};
-									console.log(email)
-									
-									grups.doc(email).set(doc)
-									  .then(() => {
-										console.log("Documento subido con éxito con ID personalizado:", email);
-									  })
-									  .catch((error) => {
-										console.error("Error al subir el documento:", error);
-									  });
-									
-									console.log("He creat el document!!")
-									console.log("He pujat el document!!")
-									add(grups, doc)
-										.then(() => {
-											console.log("Documento subido a la colección 'grups' con ID:", email);
-											showAlert("Document pujat a la col·lecció 'grups'", "alert-success");
-										})
-										.catch((error) => {
-											console.log("Error al subir el documento a 'grups':", error);
-											showAlert("Error al pujar el document a 'grups'", "alert-danger");
-										});
-								})
-								.catch(function (error) {
-									console.log("Error al crear usuario:", error);
-									showAlert("Error al intentar crear l'usuari", "alert-danger");
-								});
-						} else {
-							console.log("Las contraseñas no coinciden");
-							showAlert("Les contrasenyes no coincideixen", "alert-danger");
-						}
-					} else {
-						console.log("La contraseña es obligatoria");
-						showAlert("La contrasenya és obligatòria", "alert-danger");
+						})
+						.catch((error) => {
+							console.error("Error al obtener documentos:", error);
+						});
+				})
+				.catch(function (error) {
+					let errorMessage;
+					switch (error.code) {
+						case 'auth/invalid-email':
+							errorMessage = "L'email no és vàlid.";
+							break;
+						case 'auth/user-disabled':
+							errorMessage = "L'usuari està deshabilitat.";
+							break;
+						case 'auth/user-not-found':
+							errorMessage = "L'usuari no existeix.";
+							break;
+						case 'auth/wrong-password':
+							errorMessage = "Contrasenya incorrecta.";
+							break;
+						default:
+							errorMessage = error.message;
+							break;
 					}
+					showAlert(errorMessage, "alert-danger");
+				});
+		});
+
+		document.getElementById("newUser").addEventListener("click", function () {
+			document.getElementById("loginForm").style.display = "none";
+			document.getElementById("signupForm").style.display = "block";
+		});
+
+		document.getElementById("signup").addEventListener("click", function () {
+			let email = document.getElementById("signupEmail").value;
+			let password = document.getElementById("signupPassword").value;
+			let passwordConfirm = document.getElementById("signupPasswordConfirm").value;
+
+			if (password !== passwordConfirm) {
+				showAlert("Les contrasenyes no coincideixen", "alert-danger");
+				return;
+			}
+
+			auth.createUserWithEmailAndPassword(email, password)
+				.then(function (userCredential) {
+					showAlert("Usuari registrat correctament", "alert-success");
+					document.getElementById("signupForm").style.display = "none";
+					document.getElementById("loginForm").style.display = "block";
+				})
+				.catch(function (error) {
+					showAlert(error.message, "alert-danger");
+				});
+		});
+
+		document.getElementById("save").addEventListener("click", function () {
+			let aplicacion = document.getElementById("aplicacion").value;
+			let web = document.getElementById("web").value;
+			let usuario = document.getElementById("usuario").value;
+			let contrasenya = document.getElementById("contrasenya").value;
+			let logoFile = document.getElementById("logo").files[0];
+			let elementId = document.getElementById("elementId").value;
+			let currentUser = auth.currentUser.email;
+
+			if (elementId) {
+				if (logoFile) {
+					deleteFile(elementId)
+						.then(() => {
+							uploadFile(logoFile)
+								.then((downloadURL) => {
+									updateItem(elementId, aplicacion, web, usuario, contrasenya, downloadURL);
+								});
+						});
 				} else {
-					console.log("Email incorrecto");
-					showAlert("Email incorrecte", "alert-danger");
+					let thumbnail = document.getElementById("thumbnail").src;
+					updateItem(elementId, aplicacion, web, usuario, contrasenya, thumbnail);
 				}
-			});
-			
-			
-			
-		
-			document.getElementById("save").addEventListener("click", function () {
-				console.log("Botón de guardar presionado");
-				let id = document.getElementById("elementId").value;
-				let aplicacion = document.getElementById("aplicacion").value;
-				let usuario = document.getElementById("usuario").value;
-				let contrasenya = document.getElementById("contrasenya").value;
-				let logo = document.getElementById("logo").files[0];
-				let email = document.getElementById("loginEmail").value;
-				let reference = firebase.firestore().collection("grups").doc(email);
-				let doc = {
+			} else {
+				if (logoFile) {
+					uploadFile(logoFile)
+						.then((downloadURL) => {
+							saveItem(aplicacion, web, usuario, contrasenya, downloadURL);
+						});
+				} else {
+					let downloadURL = document.getElementById("thumbnail").src;
+					saveItem(aplicacion, web, usuario, contrasenya, downloadURL);
+				}
+			}
+
+			function saveItem(aplicacion, web, usuario, contrasenya, logo) {
+				db.collection("items").add({
 					aplicacion: aplicacion,
+					web: web,
 					usuario: usuario,
 					contrasenya: contrasenya,
-					email: email,
-					reference: reference
-				};
-		
-				if (id == "") {
-					uploadFile(logo)
-						.then((imageUrl) => {
-							doc.logo = imageUrl;
-							addUsuari(doc);
-						})
-						.catch(() => {
-							console.log("Error al guardar elemento");
-							showAlert("Error al intentar guardar l'element", "alert-danger");
-						});
-					} else {
-						if (imatgeModificada) {
-							let currentImageUrl = document.getElementById("thumbnail").src;
-							deleteFile(currentImageUrl)
-								.then(() => {
-									uploadFile(logo)
-										.then((imageUrl) => {
-											doc.logo = imageUrl;
-											updateItem(id, doc);
-										})
-										.catch(() => {
-											console.log("Error al actualizar elemento");
-											showAlert("Error al intentar actualitzat l'element", "alert-danger");
-										});
-								})
-								.catch(() => {
-									console.log("Error al actualizar elemento");
-									showAlert("Error al intentar actualizar el elemento");
-								});
-							document.getElementById("logo").addEventListener("change", function () {
-								console.log("Cambio de imagen detectado");
-								imatgeModificada = true;
-							});
-						}
-					
-						function togglePasswordVisibility(itemId) {
-							const passwordField = document.getElementById(`password-${itemId}`);
-							if (passwordField.innerText === '*********') {
-								passwordField.innerText = passwordField.dataset.password;
-							} else {
-								passwordField.innerText = '*********';
-							}
-						}
-					
-						function copyPassword(itemId) {
-							const passwordField = document.getElementById(`password-${itemId}`);
-							const tempInput = document.createElement('input');
-							tempInput.value = passwordField.dataset.password;
-							document.body.appendChild(tempInput);
-							tempInput.select();
-							document.execCommand('copy');
-							document.body.removeChild(tempInput);
-							showAlert("Contrasenya copiada", "alert-success");
-						}
-					
-						function loadItems(userEmail) {
-							console.log("Cargando elementos para el usuario:", userEmail);
-							// Limpiar la tabla antes de cargar nuevos elementos
-							document.getElementById("listItems").innerHTML = `<tr>
-																				<th>Logo</th>
-																				<th>Aplicació</th>
-																				<th>Usuario</th>
-																				<th>Contraseña</th>
-																			</tr>`;
-					
-							// Obtener solo las imágenes que tienen la referencia adecuada
-							selectAll(usuaris)
-								.then((arrayItems) => {
-									arrayItems.forEach((docItem) => {
-										// Filtrar por el correo electrónico del usuario autenticado
-										if (userEmail === "user@gmail.com" && docItem.data().reference && docItem.data().reference.path === "grups/ZlsSAJgzqh15T3jzOmXh") {
-											let logo = "";
-											if (docItem.data().logo != null) {
-												logo = `<img src="${docItem.data().logo}" class="rounded" style="max-width: 100px; max-height: 100px;" alt="${docItem.data().title}">`;
-											}
-											document.getElementById("listItems").innerHTML += `<tr>
-																								<td>${logo}</td>
-																								<td>${docItem.data().aplicacion}</td>
-																								<td>${docItem.data().usuario}</td>
-																								<td id="password-${docItem.id}" data-password="${docItem.data().contrasenya}">*********</td>
-																								<td>
-																									<button type="button" class="btn btn-danger float-right" onclick="eliminar('${docItem.id}', '${docItem.data().logo}')">Eliminar</button>
-																									<button type="button" class="btn btn-primary mr-2 float-right" onclick="editItem('${docItem.id}')">Editar</button>
-																									<button type="button" class="btn btn-secondary mr-2 float-right" onclick="togglePasswordVisibility('${docItem.id}')">Mostrar/Ocultar</button>
-																									<button type="button" class="btn btn-secondary mr-2 float-right" onclick="copyPassword('${docItem.id}')">Copiar</button>
-																								</td>
-																							</tr>`;
-										} else if (userEmail !== "user@gmail.com") {
-											// Lógica para cargar otros elementos si el correo no es user@gmail.com
-										}
-									});
-								})
-								.catch(() => {
-									showAlert("Error al mostrar els elements", "alert-danger");
-								});
-						}
-					}
-				}
-			)
-		</script>							
-	</body>
-	</html>
+					logo: logo,
+					user: currentUser
+				})
+					.then(function (docRef) {
+						console.log("Document written with ID: ", docRef.id);
+						loadItems(currentUser);
+					})
+					.catch(function (error) {
+						console.error("Error adding document: ", error);
+					});
+			}
+
+			function updateItem(elementId, aplicacion, web, usuario, contrasenya, logo) {
+				db.collection("items").doc(elementId).set({
+					aplicacion: aplicacion,
+					web: web,
+					usuario: usuario,
+					contrasenya: contrasenya,
+					logo: logo,
+					user: currentUser
+				})
+					.then(function () {
+						console.log("Document successfully updated!");
+						loadItems(currentUser);
+					})
+					.catch(function (error) {
+						console.error("Error updating document: ", error);
+					});
+			}
+		});
+
+		function loadItems(userEmail) {
+			db.collection("items").where("user", "==", userEmail)
+				.get()
+				.then(function (querySnapshot) {
+					let table = document.getElementById("listItems");
+					table.innerHTML = `
+						<tr>
+							<th>Aplicación</th>
+							<th>Web</th>
+							<th>Usuario</th>
+							<th>Contraseña</th>
+							<th>Logo</th>
+							<th>Acciones</th>
+						</tr>
+					`;
+					querySnapshot.forEach(function (doc) {
+						let item = doc.data();
+						let row = table.insertRow();
+						row.innerHTML = `
+							<td>${item.aplicacion}</td>
+							<td>${item.web}</td>
+							<td>${item.usuario}</td>
+							<td>${item.contrasenya}</td>
+							<td><img src="${item.logo}" style="max-width: 50px; max-height: 50px;"></td>
+							<td>
+								<button class="btn btn-primary editButton" data-id="${doc.id}">Editar</button>
+								<button class="btn btn-danger deleteButton" data-id="${doc.id}" data-url="${item.logo}">Eliminar</button>
+							</td>
+						`;
+					});
+					addEventListeners();
+				})
+				.catch(function (error) {
+					console.log("Error getting documents: ", error);
+				});
+		}
+
+		function addEventListeners() {
+			let editButtons = document.querySelectorAll('.editButton');
+			editButtons.forEach(button => {
+				button.addEventListener('click', (event) => {
+					let itemId = event.target.getAttribute('data-id');
+					db.collection("items").doc(itemId).get().then((doc) => {
+						let item = doc.data();
+						document.getElementById("aplicacion").value = item.aplicacion;
+						document.getElementById("web").value = item.web;
+						document.getElementById("usuario").value = item.usuario;
+						document.getElementById("contrasenya").value = item.contrasenya;
+						document.getElementById("thumbnail").src = item.logo;
+						document.getElementById("thumbnail").style.visibility = 'visible';
+						document.getElementById("elementId").value = doc.id;
+					});
+				});
+			});
+
+			let deleteButtons = document.querySelectorAll('.deleteButton');
+			deleteButtons.forEach(button => {
+				button.addEventListener('click', (event) => {
+					let itemId = event.target.getAttribute('data-id');
+					let imageUrl = event.target.getAttribute('data-url');
+					eliminar(itemId, imageUrl);
+				});
+			});
+		}
+
+		function deleteFile(imageUrl) {
+			let storageRef = firebase.storage().refFromURL(imageUrl);
+			return storageRef.delete();
+		}
+
+		function uploadFile(file) {
+			let storageRef = firebase.storage().ref();
+			let uploadTask = storageRef.child('images/' + file.name).put(file);
+			return uploadTask.then(snapshot => snapshot.ref.getDownloadURL());
+		}
+
+		document.getElementById("generatePasswordButton").addEventListener("click", function () {
+			let randomPassword = Math.random().toString(36).slice(-8);
+			document.getElementById("contrasenya").value = randomPassword;
+		});
+	</script>
+</body>
+
+</html>
