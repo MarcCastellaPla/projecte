@@ -26,7 +26,7 @@
 					<div class="form-group row">
 						<label for="content" class="col-4 col-form-label">Contrasenya:</label>
 						<div class="col-8">
-							<input type="password" class="form-control" id="loginPassword" value="Admin1234">
+							<input type="password" class="form-control" id="loginPassword">
 						</div>
 					</div>
 					<div class="form-group row">
@@ -189,7 +189,7 @@
                     loadItems(userEmail);
 
                     // Aquí puedes introducir el código para buscar el documento
-                    db.collection("grups").get()
+                    db.collection("usuaris").get()
                         .then((querySnapshot) => {
                             querySnapshot.forEach((doc) => {
                                 if (doc.data().email === email) {
@@ -247,14 +247,15 @@
 									showAlert("Usuari creat correctament", "alert-success");
 									document.getElementById("loginForm").style.display = "block";
 			
-									// Crear el documento con el email como ID y subirlo a la colección 'grups'
+									// Crear el documento con el email como ID y subirlo a la colección 'usuaris'
 									let email = document.getElementById("signupEmail").value;
 									let doc = {
 									  email: email
 									};
 									console.log(email)
 									
-									grups.doc(email).set(doc)
+                                    console.log("HOLA, M'HE EXECUTAT I HE CREAT UN REGISTRE A USUARIS!!")
+									usuaris.doc(email).set(doc)
 									  .then(() => {
 										console.log("Documento subido con éxito con ID personalizado:", email);
                                         document.getElementById("signupForm").style.display = "none";
@@ -266,15 +267,15 @@
 									
 									console.log("He creat el document!!")
 									console.log("He pujat el document!!")
-									add(grups, doc)
-										.then(() => {
-											console.log("Documento subido a la colección 'grups' con ID:", email);
-											showAlert("Document pujat a la col·lecció 'grups'", "alert-success");
-										})
-										.catch((error) => {
-											console.log("Error al subir el documento a 'grups':", error);
-											showAlert("Error al pujar el document a 'grups'", "alert-danger");
-										});
+									// // add(usuaris, doc)
+									// 	.then(() => {
+									// 		console.log("Documento subido a la colección 'usuaris' con ID:", email);
+									// 		showAlert("Document pujat a la col·lecció 'usuaris'", "alert-success");
+									// 	})
+									// 	.catch((error) => {
+									// 		console.log("Error al subir el documento a 'usuaris':", error);
+									// 		showAlert("Error al pujar el document a 'usuaris'", "alert-danger");
+									// 	});
 								})
 								.catch(function (error) {
 									console.log("Error al crear usuario:", error);
@@ -314,7 +315,7 @@
 		let contrasenya = document.getElementById("contrasenya").value;
 		let logo = document.getElementById("logo").files[0];
 		let email = document.getElementById("loginEmail").value;
-        let reference = firebase.firestore().collection("grups").doc(email);
+        let reference = firebase.firestore().collection("usuaris").doc(email);
         let web = document.getElementById("web").value; // Aquí se obtiene el valor del campo de la web
         console.log("Web es")
         console.log(web)

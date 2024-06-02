@@ -1,8 +1,8 @@
 const usuaris = db.collection("usuaris");
-const grups = db.collection("grups"); // Añadido de la versión 2
+const contrasenyes = db.collection("contrasenyes"); // Añadido de la versión 2
 
 function addUsuari(doc) {
-    add(usuaris, doc)
+    add(contrasenyes, doc)
         .then(() => {
             // loadItems();
 
@@ -22,7 +22,7 @@ function addUsuari(doc) {
 }
 
 function deleteItem(id) {
-    deleteById(usuaris, id)
+    deleteById(contrasenyes, id)
         .then(() => {
             loadItems();
             showAlert("Element eliminat correctament", "alert-success");
@@ -34,7 +34,7 @@ function deleteItem(id) {
 function editItem(id) {
     document.getElementById("elementId").value = id;
     document.getElementById("thumbnail").style.visibility = "visible";
-    selectById(usuaris, id)
+    selectById(contrasenyes, id)
         .then((doc) => {
             document.getElementById("aplicacion").value = doc.data().aplicacion;
             document.getElementById("usuario").value = doc.data().usuario;
@@ -60,14 +60,14 @@ function loadItems(userEmail) {
     // Obtener el documento de "grups" correspondiente al correo electrónico del usuario
     console.log("Abans de selectbyid grups")
     let emailusuari = document.getElementById("loginEmail").value;
-    console.log(grups)
+    console.log(usuaris)
     console.log(emailusuari)
-    selectById(grups, emailusuari)
+    selectById(usuaris, emailusuari)
         .then((doc) => {
             if (doc.exists) {
                 console.log("Despres de selectbyid grups")
                 // Filtrar documentos en "usuaris" que tienen una referencia al documento de "grups"
-                selectWhere(usuaris, "reference", "==", doc.ref)
+                selectWhere(contrasenyes, "reference", "==", doc.ref)
                     .then((arrayItems) => {
                         console.log("Elementos obtenidos:", arrayItems);
                         arrayItems.forEach((docItem) => {
@@ -153,7 +153,7 @@ function copyPassword(id) {
 }
 
 function updateItem(id, doc) {
-    updateById(usuaris, id, doc)
+    updateById(contrasenyes, id, doc)
         .then(() => {
             loadItems();
 
