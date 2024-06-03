@@ -90,10 +90,10 @@ function loadItems(userEmail) {
                                                 <button type="button" class="btn btn-danger float-right" onclick="eliminar('${docItem.id}', '${docItem.data().logo}')">Eliminar</button>
                                                 <button type="button" class="btn btn-primary mr-2 float-right" onclick="editItem('${docItem.id}')">Editar</button>
                                                 <button type="button" class="btn btn-secondary mr-2 float-right" onclick="togglePasswordVisibility('${docItem.id}', this)">
-                                                    <img src="../Ver.png" alt="Mostrar/Ocultar" style="width: 20px; height: 20px;">
+                                                    <img src="../images/ver.png" alt="Mostrar/Ocultar" style="width: 20px; height: 20px;">
                                                 </button>                                                                        
                                                 <button type="button" class="btn btn-secondary mr-2 float-right" onclick="copyPassword('${docItem.id}')">
-                                                    <img src="../Copiar.png" alt="Copiar" style="width: 20px; height: 20px;">
+                                                    <img src="../images/copiar.png" alt="Copiar" style="width: 20px; height: 20px;">
                                                 </button>
                                             </td>
                                         </tr>`;
@@ -118,10 +118,10 @@ function togglePasswordVisibility(id, button) {
     const passwordField = document.getElementById(`password-${id}`);
     if (passwordField.textContent === '*********') {
         passwordField.textContent = passwordField.getAttribute('data-password');
-        button.querySelector('img').src = '../Ocultar.png';
+        button.querySelector('img').src = '../images/ocultar.png';
     } else {
         passwordField.textContent = '*********';
-        button.querySelector('img').src = '../Ver.png';
+        button.querySelector('img').src = '../images/ver.png';
     }
 }
 
