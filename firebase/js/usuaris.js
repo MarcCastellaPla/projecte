@@ -39,6 +39,7 @@ function editItem(id) {
             document.getElementById("usuario").value = doc.data().usuario;
             document.getElementById("contrasenya").value = doc.data().contrasenya;
             document.getElementById("thumbnail").src = doc.data().logo;
+            document.getElementById("web").value = doc.data().web;
         })
         .catch(() => {
             showAlert("Error al intentar editar l'element", "alert-danger");
