@@ -46,7 +46,7 @@ function editItem(id) {
         });
 }
 
-function loadItems(userEmail) {
+function loadItems() {
     console.log("Cargando elementos...");
     document.getElementById("listItems").innerHTML = `<tr>
                                                         <th>Logo</th>

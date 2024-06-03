@@ -177,8 +177,7 @@
                     document.getElementById("itemsForm").style.display = "block";
                     document.getElementById("listItems").style.display = "table";
 
-                    let userEmail = document.getElementById("loginEmail").value;
-                    loadItems(userEmail);
+                    loadItems();
 
                     db.collection("usuaris").get()
                         .then((querySnapshot) => {
