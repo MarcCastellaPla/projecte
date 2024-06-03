@@ -1,10 +1,9 @@
 const usuaris = db.collection("usuaris");
-const contrasenyes = db.collection("contrasenyes"); // Añadido de la versión 2
+const contrasenyes = db.collection("contrasenyes");
 
 function addUsuari(doc) {
     add(contrasenyes, doc)
         .then(() => {
-            // loadItems();
 
             document.getElementById("aplicacion").value = "";
             document.getElementById("usuario").value = "";
@@ -48,7 +47,6 @@ function editItem(id) {
 
 function loadItems(userEmail) {
     console.log("Cargando elementos...");
-    // Limpiar la tabla antes de cargar nuevos elementos
     document.getElementById("listItems").innerHTML = `<tr>
                                                         <th>Logo</th>
                                                         <th>Aplicació</th>
@@ -57,26 +55,19 @@ function loadItems(userEmail) {
                                                         <th>Web</th>
                                                     </tr>`;
 
-    // Obtener el documento de "grups" correspondiente al correo electrónico del usuario
-    console.log("Abans de selectbyid grups")
     let emailusuari = document.getElementById("loginEmail").value;
-    console.log(usuaris)
-    console.log(emailusuari)
     selectById(usuaris, emailusuari)
         .then((doc) => {
             if (doc.exists) {
-                console.log("Despres de selectbyid grups")
-                // Filtrar documentos en "usuaris" que tienen una referencia al documento de "grups"
                 selectWhere(contrasenyes, "reference", "==", doc.ref)
                     .then((arrayItems) => {
-                        console.log("Elementos obtenidos:", arrayItems);
                         arrayItems.forEach((docItem) => {
                             let logo = "";
                             if (docItem.data().logo != null) {
                                 logo = `<img src="${docItem.data().logo}" class="rounded" style="max-width: 100px; max-height: 100px;" alt="${docItem.data().title}">`;
                             }
                             let webLink;
-                            let link = "Link"; // Declarar link fuera del bloque if
+                            let link = "Link"; 
                             if (docItem.data().web !== undefined) {
                                 link = "Link";
                                 webLink = docItem.data().web;
@@ -84,12 +75,10 @@ function loadItems(userEmail) {
                                     webLink = "https://" + webLink;
                                 }
                             } else {
-                                webLink = ""; // o cualquier otro valor predeterminado que desees
+                                webLink = ""
                                 link = "";
                             }
                             
-                            console.log("Valor de webLink después de la condición:", webLink);                
-                            // console.log(webLink)
                             let row = `<tr>
                                             <td>${logo}</td>
                                             <td>${docItem.data().aplicacion}</td>
@@ -116,7 +105,6 @@ function loadItems(userEmail) {
                     });
             } else {
                 console.log("El usuario no tiene un documento correspondiente en 'grups'");
-                // Puedes mostrar un mensaje o manejar la situación de otra manera según sea necesario
             }
         })
         .catch((error) => {
@@ -129,11 +117,9 @@ function togglePasswordVisibility(id, button) {
     const passwordField = document.getElementById(`password-${id}`);
     if (passwordField.textContent === '*********') {
         passwordField.textContent = passwordField.getAttribute('data-password');
-        // Cambiar la imagen a la imagen de ocultar
         button.querySelector('img').src = '../Ocultar.png';
     } else {
         passwordField.textContent = '*********';
-        // Cambiar la imagen a la imagen de mostrar
         button.querySelector('img').src = '../Ver.png';
     }
 }

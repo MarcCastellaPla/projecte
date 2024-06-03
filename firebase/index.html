@@ -147,7 +147,6 @@
     <script src="js/usuaris.js"></script>
     <script>
         let imatgeModificada = false;
-        console.log("Prova: ")
         function eliminar(itemId, imageUrl) {
             deleteFile(imageUrl)
                 .then(() => {
@@ -170,39 +169,27 @@
             let email = document.getElementById("loginEmail").value;
             let password = document.getElementById("loginPassword").value;
 
-            console.log("Botón de inicio de sesión presionado");
-            console.log("Email:", email);
-
             auth.signInWithEmailAndPassword(email, password)
-                .then(function (userCredential) {
-                    console.log("Usuario autenticado correctamente");
+                .then(function (userCredential) {;
                     showAlert("Usuari autenticat", "alert-success");
 
                     document.getElementById("loginForm").style.display = "none";
                     document.getElementById("itemsForm").style.display = "block";
                     document.getElementById("listItems").style.display = "table";
 
-                    // Pasar el correo electrónico a la función loadItems
-                    console.log("Abans del let")
                     let userEmail = document.getElementById("loginEmail").value;
-                    console.log("Despres del let")
-                    console.log("Cargando elementos para el usuario:", userEmail);
                     loadItems(userEmail);
 
-                    // Aquí puedes introducir el código para buscar el documento
                     db.collection("usuaris").get()
                         .then((querySnapshot) => {
                             querySnapshot.forEach((doc) => {
                                 if (doc.data().email === email) {
                                     let docId = doc.id;
-                                    console.log("ID del documento encontrado:", docId);
-                                    // Aquí puedes manejar el documento encontrado
                                 }
                             });
                         })
                         .catch((error) => {
                             console.error("Error al obtener documentos:", error);
-                            // Maneja el error aquí
                         });
 
                 })
@@ -248,17 +235,14 @@
 									showAlert("Usuari creat correctament", "alert-success");
 									document.getElementById("loginForm").style.display = "block";
 			
-									// Crear el documento con el email como ID y subirlo a la colección 'usuaris'
 									let email = document.getElementById("signupEmail").value;
 									let doc = {
 									  email: email
 									};
 									console.log(email)
 									
-                                    console.log("HOLA, M'HE EXECUTAT I HE CREAT UN REGISTRE A USUARIS!!")
 									usuaris.doc(email).set(doc)
 									  .then(() => {
-										console.log("Documento subido con éxito con ID personalizado:", email);
                                         document.getElementById("signupForm").style.display = "none";
                                         document.getElementById("loginForm").style.display = "block";
 									  })
@@ -266,17 +250,6 @@
 										console.error("Error al subir el documento:", error);
 									  });
 									
-									console.log("He creat el document!!")
-									console.log("He pujat el document!!")
-									// // add(usuaris, doc)
-									// 	.then(() => {
-									// 		console.log("Documento subido a la colección 'usuaris' con ID:", email);
-									// 		showAlert("Document pujat a la col·lecció 'usuaris'", "alert-success");
-									// 	})
-									// 	.catch((error) => {
-									// 		console.log("Error al subir el documento a 'usuaris':", error);
-									// 		showAlert("Error al pujar el document a 'usuaris'", "alert-danger");
-									// 	});
 								})
 								.catch(function (error) {
 									console.log("Error al crear usuario:", error);
@@ -296,19 +269,6 @@
 				}
 			});
 
-        // document.getElementById("logo").addEventListener("change", function () {
-        //     imatgeModificada = true;
-        //     if (this.files && this.files[0]) {
-        //         var reader = new FileReader();
-        //         reader.onload = function (e) {
-        //             var thumbnail = document.getElementById("thumbnail");
-        //             thumbnail.src = e.target.result;
-        //             thumbnail.style.visibility = "visible";
-        //         }
-        //         reader.readAsDataURL(this.files[0]);
-        //     }
-        // });
-
 		document.getElementById("save").addEventListener("click", function () {
 		let id = document.getElementById("elementId").value;
 		let aplicacion= document.getElementById("aplicacion").value;
@@ -317,9 +277,7 @@
 		let logo = document.getElementById("logo").files[0];
 		let email = document.getElementById("loginEmail").value;
         let reference = firebase.firestore().collection("usuaris").doc(email);
-        let web = document.getElementById("web").value; // Aquí se obtiene el valor del campo de la web
-        console.log("Web es")
-        console.log(web)
+        let web = document.getElementById("web").value;
 		let doc = {
 			aplicacion: aplicacion,
 			usuario: usuario,
@@ -332,9 +290,7 @@
 		if (id == "") {
 			uploadFile(logo)
 				.then((imageUrl) => {
-                    console.log("Abans del doclogo")
 					doc.logo = imageUrl;
-                    console.log("despres del doclogo")
 					addUsuari(doc);
 				})
 				.catch(() => {
@@ -343,8 +299,6 @@
 		} else {
 			if (imatgeModificada) {
 				let currentImageUrl = document.getElementById("thumbnail").src;
-				console.log("CurrentImageURL: ")
-				console.log(currentImageUrl)
 				deleteFile(currentImageUrl)
 					.then(() => {
 						uploadFile(logo)
